@@ -1,0 +1,98 @@
+---
+title: "Adding & Managing Elements"
+description: "Learn how to build your UI by adding elements from the Elements palette, using UI Libraries, and organizing them with the Layers panel."
+sidebarTitle: "Adding Elements"
+icon: "cubes"
+---
+
+---
+
+# Adding & Managing Elements
+
+Elements are the visual building blocks of your application. Every piece of text, every button, and every pre-built component is an element. Learning how to add, organize, and structure them is the key to creating a beautiful and functional UI.
+
+---
+
+## Where to Find Elements
+
+In Saasio, you can add elements to your page from two primary sources in the top navigation bar:
+
+<CardGroup cols={2}>
+  <Card title="Elements Tab" icon="shapes">
+    This palette contains the fundamental building blocks for any UI: **Text**,
+    **Containers**, **Images**, **Buttons**, **Forms**, and more. You'll use
+    these for creating custom layouts and basic content.
+  </Card>
+  <Card title="UI Libraries Tab" icon="swatchbook">
+    This tab gives you access to a rich collection of pre-built, professionally
+    designed components from popular libraries like
+    [Shadcn](https://ui.shadcn.com/), [Magic UI](https://magicui.design/), and
+    [Aceternity UI](https://ui.aceternity.com/), etc. Use these to build modern
+    interfaces quickly.
+  </Card>
+</CardGroup>
+
+---
+
+## Adding Elements to the Canvas
+
+The primary way to build your UI is by dragging and dropping elements onto the central canvas.
+
+<Steps>
+<Step title="1. Select an Element or Component">
+Open either the **Elements** tab or the **UI Libraries** tab from the top navigation bar. Find the component you wish to add.
+</Step>
+
+<Step title="2. Drag and Drop onto the Canvas">
+  Click and hold the element, drag it over the central canvas to your desired
+  position, and release it. The new element will appear on your page.
+</Step>
+
+<Step title="3. View the New Element in Layers">
+After adding an element, look at the **Layers** panel on the left. You will see your new component listed in the page's element hierarchy. The Layers panel is essential for understanding the structure of your page.
+</Step>
+</Steps>
+
+<Tip title="Pro Tip: Use Keyboard Shortcuts">
+  For faster building, you can use keyboard shortcuts to add common elements
+  directly to your canvas. Press the key combination, and the element will be
+  added instantly.
+
+- `Alt + C` : Container
+- `Alt + T` : Text
+- `Alt + I` : Image
+- `Alt + V` : Video
+- `Alt + 1` : Heading 1 (H1)
+- `Alt + 2` : Heading 2 (H2)
+- `Alt + 3` : Heading 3 (H3)
+- `Alt + L` : Link
+- `Alt + F` : Form
+- `Alt + B` : Button
+- `Alt + Shift + I` : Input
+- `Alt + A` : Audio
+
+</Tip>
+
+---
+
+## The Power of Containers: Grouping & Nesting
+
+The most important element for creating clean, organized layouts is the **Container**. A container is a special element that acts as a box to hold and group other elements.
+
+<Note>
+  **Key Concept:** To create professional layouts, you should always place
+  related elements inside a **Container**. For example, you would place a title,
+  a paragraph, and a button together inside one container to create a "hero
+  section".
+</Note>
+
+To nest an element, simply drag it from the Elements tab and drop it directly **on top of a container** in the canvas. You can also re-parent elements by dragging them within the **Layers** panel.
+
+**Example Hierarchy in the Layers Panel:**
+
+```text
+- Container (Hero Section)
+  - Text (Title: "Welcome to Saasio")
+  - Text (Paragraph: "Build amazing apps...")
+  - Button (Call to Action: "Get Started")
+```

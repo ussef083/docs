@@ -1,0 +1,141 @@
+---
+title: "Exploring the Visual Editor"
+description: "A detailed tour of the Saasio Visual Editor. Learn about the canvas, panels, and the primary tools you'll use to build your SaaS application."
+---
+
+---
+
+The Saasio Visual Editor is the heart of the platform. It's an all-in-one workspace where you will design your user interface, manage your app's data, build workflows, and configure settings.
+
+Understanding its layout is the key to building quickly and efficiently.
+
+<Frame caption="The Saasio Visual Editor interface.">
+  <img
+    alt="A complete overview of the Saasio Visual Editor."
+    src="/images/visual-editor-overview.png"
+    style={{ borderRadius: "8px" }}
+  />
+</Frame>
+
+The editor is divided into four main areas:
+
+---
+
+## Top Navigation Bar: Quick Actions
+
+The top bar is your primary toolkit for building your application. It provides direct access to every major function you'll need, from designing the UI to deploying your project.
+
+<CardGroup cols={3}>
+  <Card title="AI Wireframe" icon="robot">
+    Generate entire page layouts and components instantly from a simple text
+    prompt.
+  </Card>
+  <Card title="UI Libraries" icon="swatchbook">
+    Access pre-built, professional components from
+    [Shadcn](https://ui.shadcn.com/), [Magic UI](https://magicui.design/), and
+    [Aceternity UI](https://ui.aceternity.com/) , etc.
+  </Card>
+  <Card title="Elements" icon="cubes">
+    Add fundamental building blocks like text, containers, images, and forms to
+    your page.
+  </Card>
+  <Card title="Data" icon="database">
+    Manage your database tables, create form schemas, and connect to any
+    external API, etc.
+  </Card>
+  <Card title="Logic" icon="diagram-project">
+    Define the step-by-step workflows and actions that power your application's
+    interactivity.
+  </Card>
+  <Card title="Settings" icon="gear">
+    Configure app-level settings such as your custom domain, SEO, and
+    integrations.
+  </Card>
+  <Card title="Device Previews" icon="mobile-screen-button">
+    Instantly check your design's responsiveness across desktop, tablet, and
+    mobile screens.
+  </Card>
+  <Card title="Publish / Modify Your Mvp" icon="rocket">
+    Preview, publish, and manage your application's live deployments with a
+    single click.
+  </Card>
+</CardGroup>
+
+---
+
+## Left Panel: Project Structure
+
+The left panel is your command center for managing the assets, logic, and overall structure of your application. It contains several powerful tabs for different functions.
+
+<CardGroup cols={2}>
+  <Card title="Pages" icon="file-lines">
+    Create new pages, organize them into folders, and navigate between the
+    different screens of your application.
+  </Card>
+  <Card title="API Routes" icon="server">
+    Define backend API endpoints to handle server-side logic, interact with your
+    database, or connect to external services.
+  </Card>
+  <Card title="Layers" icon="layer-group">
+    View the complete hierarchy of all UI elements on the current page. Select,
+    reorder, and manage elements from this view.
+  </Card>
+  <Card title="Components" icon="box-archive">
+    Create your own reusable UI components. Build a component once and use it
+    anywhere across your application to maintain consistency.
+  </Card>
+  <Card title="States & Assets" icon="cube">
+    Manage your app's data. Create **State** variables for storing temporary
+    data and upload **Assets** like images, videos, and files.
+  </Card>
+  <Card title="Conditions" icon="sliders">
+    Define powerful rules to dynamically change how elements look and behave
+    based on application state or user interaction.
+  </Card>
+  <Card title="Design System" icon="palette">
+    Let the AI generate a complete design system for your app, including color
+    palettes and typography for both light and dark themes.
+  </Card>
+  <Card title="Email Templates" icon="envelope">
+    Design and manage professional, reusable email templates for transactional
+    emails, notifications, and marketing campaigns.
+  </Card>
+</CardGroup>
+
+---
+
+## Central Canvas: Your Workspace
+
+The canvas is the large, interactive area in the center of the editor. This is your main building space.
+
+- **Visual Building:** Drag and drop elements from the UI Libraries and Elements tabs directly onto the canvas.
+- **Direct Manipulation:** Click, resize, and rearrange elements to create your desired layout.
+- **Live Preview:** The canvas provides a real-time preview of what your page will look like.
+
+---
+
+## Right Panel: Properties & Styling
+
+The right panel is your contextual toolkit for fine-tuning every element. When you select a component on the canvas, this panel dynamically updates to show all of its available settings.
+
+This is where you control how your elements look, feel, and behave across different screen sizes.
+
+<CardGroup cols={2}>
+  <Card title="Appearance" icon="palette">
+    Adjust visual styles like colors, backgrounds, fonts, borders, and shadows
+    to match your brand.
+  </Card>
+  <Card title="Layout" icon="ruler-combined">
+    Control the element's size, spacing (padding and margins), and exact
+    positioning on the page.
+  </Card>
+  <Card title="Settings" icon="gear">
+    Configure element-specific properties, such as the URL for a link or the
+    validation rules for a form input.
+  </Card>
+  <Card title="Animations" icon="wand-magic-sparkles">
+    Bring your UI to life with production-grade animations powered by
+    [motion.dev](https://motion.dev) (formerly Framer Motion). Customize how
+    elements appear and respond to user interaction.
+  </Card>
+</CardGroup>

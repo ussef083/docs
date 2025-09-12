@@ -1,80 +1,75 @@
 ---
 title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+description: "Your 5-minute guide to signing up, logging in, and creating your first SaaS project in Saasio."
 ---
 
-## Get started in three steps
+---
 
-Get your documentation site running locally and make your first customization.
+Welcome to Saasio! This guide will get you from zero to your first project in under five minutes. We'll walk through creating your account and launching your first application.
 
-### Step 1: Set up your local environment
+Let's begin.
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+---
 
-### Step 2: Deploy your changes
+## Part 1: Create Your Account
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+Your Saasio account is your personal workspace.
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+<Steps>
+  <Step title="Sign Up on the Homepage">
+    Navigate to [**Saasio.io**](https://saasio.io) and click the **Sign Up** button. You will need to provide your email address and a secure password.
+  </Step>
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+<Step title="Verify Your Email">
+  Check your inbox for a verification email. Click the link inside to confirm
+  your account and protect its security. If you don't see it, check your spam
+  folder.
+</Step>
 
-### Step 3: Go live
+  <Step title="Log In">
+    Once verified, log in with your new credentials. You will be directed to your main **Projects Dashboard**, which is the central hub for all your applications.
+  </Step>
+</Steps>
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+---
 
-## Next steps
+## Part 2: Create Your First Project
 
-Now that you have your docs running, explore these key features:
+A **Project** in Saasio is a complete, standalone SaaS application. It comes with its own database, pages, and backend logic.
 
-<CardGroup cols={2}>
+<Steps>
+  <Step title="Start a New Project">
+    On your Projects Dashboard, click the **"Create Project"** button. This will open the project setup screen.
+  </Step>
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+  <Step title="Enter Your Project Details">
+    You will be asked for three key details:
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+    - **Project Name:** A public name for your app (e.g., "AI Content Writer").
+    - **Project Subdomain:** A unique URL for your app (e.g., `ai-writer.saasio.io`).
+    - **Description:** A short, internal summary of your project.
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
+    <Frame caption="Create Project Modal in Saasio">
+      <img
+        alt="Create Project Modal in Saasio"
+        src="/images/quickstart/create-project-modal.png"
+        style={{ borderRadius: "8px" }}
+      />
+    </Frame>
 
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
+  </Step>
 
-</CardGroup>
+  <Step title="Launch the Editor">
+    Click **Create Project**. Your project will be set up instantly, and you'll be taken directly into the Saasio Visual Editor.
+  </Step>
+</Steps>
 
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
+Congratulations! You are now inside your first project and ready to start building.
+
+---
+
+### What's Next?
+
+Get familiar with the powerful tools at your fingertips. Our next guide explores the key areas of the Saasio Visual Editor.
+
+- **[Explore the Saasio Visual Editor →](/visual-editor)**

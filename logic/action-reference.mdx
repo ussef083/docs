@@ -1,0 +1,342 @@
+---
+title: "Full Action Reference"
+description: "A complete reference guide to all available actions in Saasio's workflow editor, including their execution context."
+sidebarTitle: "Action Reference"
+icon: "list-ol"
+---
+
+---
+
+# Full Action Reference
+
+Actions are the individual steps that make up your application's workflows. Each action is designed to run in a specific context: on the user's browser (**Frontend**) or on the Saasio backend (**Server**). Understanding this is key to building powerful logic.
+
+---
+
+<AccordionGroup>
+<Accordion title="Navigation Actions" icon="map-signs">
+  These actions control the user's browser and run entirely on the **Frontend**.
+
+  <Card title="Go to page..." icon="arrow-right">
+    **Purpose:** Redirects the user to another internal page, with the option to pass data through URL parameters.
+    
+    **Key Parameters:**
+    - `Destination Page`: Select the page you want to send the user to from a dropdown list.
+    - `URL Parameters` (Optional): Define key-value pairs to send to the destination page.
+  </Card>
+  <Card title="Go to external website" icon="arrow-up-right-from-square">
+    **Purpose:** Redirects the user to an external URL outside of your application.
+    
+    **Key Parameters:**
+    - `URL`: The full external website address.
+    - `Open In`: Choose whether to open in a `"new"` tab or the `"same"` tab.
+  </Card>
+  <Card title="Refresh the page" icon="rotate-right">
+    **Purpose:** Reloads the current page, equivalent to the browser's refresh button.
+  </Card>
+  <Card title="Return to previous page" icon="arrow-left">
+    **Purpose:** Navigates the user to the previous page in their browser history.
+  </Card>
+  <Card title="Move to next page" icon="forward">
+    **Purpose:** Navigates the user forward to the next page in their browser's history stack.
+  </Card>
+</Accordion>
+
+<Accordion title="Data & Database Actions" icon="database">
+  These actions interact with your project's data stores. They can be triggered from the **Frontend** or **Server** but the core logic is always executed securely on the **Server**.
+
+  <Card title="Create new data" icon="plus">
+    **Purpose:** Adds a new row of data to a specified Data Table. This is the primary way to save new information, such as a new user signing up or a user creating a new post.
+    
+    ---
+
+    #### **Configuration Steps**
+    1.  **Select Target Table:** Choose the Data Table where the new record should be created (e.g., `Users`).
+    2.  **Define Fields to Create:** Map each column in your table to the value you want to store. The value can be static (e.g., a fixed string) or dynamic (e.g., the input from a form field).
+
+    ---
+
+    #### **Handling the Response**
+    This is an asynchronous action. Use state variables to manage the result in your UI:
+    -   **Result:** Select a state variable to store the newly created row, including its unique `id` and timestamps. The state's data type **must** match the Data Table (e.g., `Users`).
+    -   **Error:** Select a `Text (string)` state variable to hold any error messages if the creation fails.
+    -   **Is Loading:** Select a `Boolean` state variable that is `true` while the action is in progress.
+
+  </Card>
+
+  <Card title="Update existing data" icon="pencil">
+    **Purpose:** Modifies one or more existing rows in a Data Table based on specific criteria. Use this for actions like saving changes to a user's profile.
+    
+    ---
+
+    #### **Configuration Steps**
+    1.  **Select Target Table:** Choose the Data Table you want to update (e.g., `Users`).
+    2.  **Set Conditions (WHERE Clause):** Define the rules to find the specific row(s) to update. For example, "Find the user where 'ID' is equal to the current user's ID".
+    3.  **Define Fields to Update:** Provide the new values for only the columns you want to change.
+
+    ---
+
+    #### **Handling the Response**
+    -   **Result:** Select a state variable to store the updated row(s). **Note:** This action always returns a **list (array)** of records, even if only one row was updated. Your state variable must be configured as a `List` of the matching Data Table type.
+    -   **Error:** Select a `Text (string)` state variable to hold any error messages.
+    -   **Is Loading:** Select a `Boolean` state variable to track the update process.
+
+  </Card>
+
+  <Card title="Delete data" icon="trash">
+    **Purpose:** Permanently removes one or more rows from a Data Table. This action is irreversible and should be used with caution.
+    
+    ---
+
+    #### **Configuration Steps**
+    1.  **Select Target Table:** Choose the Data Table to delete from.
+    2.  **Set Conditions (WHERE Clause):** Define the rules to find the correct row(s) to delete.
+    <Warning>
+    If you leave the conditions empty, this action will **delete all rows** in the table.
+    </Warning>
+
+    ---
+
+    #### **Handling the Response**
+    -   **Result:** This action **does not return any data**. The rows are permanently deleted. You do not need to set a Result state.
+    -   **Error:** Select a `Text (string)` state variable to hold any error messages if the deletion fails.
+    -   **Is Loading:** Select a `Boolean` state variable to provide UI feedback while the deletion is in progress.
+
+  </Card>
+
+  <Card title="Run Redis command" icon="bolt">
+    **Purpose:** Executes a command directly on your project's Redis instance for advanced caching and real-time features.
+    
+    ---
+
+    #### **Configuration Steps**
+    1.  **Select Data Type:** Choose the Redis data type you want to work with (`String`, `Hash`, `List`, `Set`, or `Json`).
+    2.  **Select Redis Command:** A new dropdown will show commands specific to the selected data type (e.g., `Set`, `Get`).
+    3.  **Provide Command Parameters:** Fill in the required inputs for the command, such as the `key` and `value`.
+
+    ---
+
+    #### **Handling the Response**
+    -   **Result:** Select a state variable to store the output of the command. The state's data type must match the command's expected output.
+    -   **Error:** Select a `Text (string)` state variable to hold any error messages.
+    -   **Is Loading:** Select a `Boolean` state variable to track the command's progress.
+
+  </Card>
+</Accordion>
+
+<Accordion title="State & Storage Actions" icon="brain">
+  These actions manage data within the application's state or the browser's local storage.
+
+  <Card title="Set data in state" icon="atom">
+    **Purpose:** Updates the value of a state variable. This action can be used on both the **Frontend** (to update the UI) and the **Server** (in API Routes, to pass data between actions).
+    
+    **Key Parameters:**
+    - `Target State`: The state variable you want to update.
+    - `New Value`: The new value to be stored.
+  </Card>
+  <Card title="Set data in local storage" icon="box">
+    **Purpose:** Stores a key-value pair in the user's browser, which persists after they close the page. This is a **Frontend-only** action.
+    
+    **Key Parameter:**
+    - `Items to Store`: Define the `key` and `value` for each item to store.
+  </Card>
+  <Card title="Set params" icon="link">
+    **Purpose:** Adds or updates query parameters in the page's URL without reloading. This is a **Frontend-only** action.
+  </Card>
+</Accordion>
+
+<Accordion title="Account Actions" icon="user">
+  These actions handle user authentication.
+
+  <Card title="Login with credentials" icon="arrow-right-to-bracket">
+    **Purpose:** Authenticates a user with their email and password.
+  </Card>
+  <Card title="Sign up and Login with credentials" icon="user-plus">
+    **Purpose:** Creates a new user account and automatically logs them in.
+  </Card>
+  <Card title="Logout" icon="arrow-right-from-bracket">
+    **Purpose:** Ends the current user's session and logs them out.
+  </Card>
+</Accordion>
+
+<Accordion title="UI & Element Actions" icon="wand-magic-sparkles">
+  Actions that directly manipulate elements on the page and run exclusively on the **Frontend**.
+
+  <Card title="Show / Hide element" icon="eye">
+    **Purpose:** Changes the visibility of a specific UI element.
+    
+    **Key Parameter:**
+    - `Target Element`: The element to show, hide, or toggle.
+  </Card>
+  <Card title="Scroll to element" icon="arrow-down">
+    **Purpose:** Smoothly scrolls the page to bring a specific element into view.
+    
+    **Key Parameter:**
+    - `Target Element`: The element to scroll to.
+  </Card>
+    <Card title="Change page title" icon="i-cursor">
+    **Purpose:** Dynamically updates the title of the current page in the browser tab.
+    
+    **Key Parameter:**
+    - `New Title`: The new string for the page title.
+  </Card>
+</Accordion>
+
+<Accordion title="Conditional Logic" icon="sitemap">
+  The Conditioner can be used to control the flow of logic in any workflow.
+
+  <Card title="Conditioner" icon="sitemap">
+    **Purpose:** Evaluates a condition and then runs different sequences of actions. This can be used on both the **Frontend** and **Server**.
+    
+    **Key Parameters:**
+    - `Condition to Check`: A dynamic expression that must resolve to `true` or `false`.
+    - `Actions if True` / `Actions if False`: The workflows to run for each outcome.
+  </Card>
+</Accordion>
+
+<Accordion title="Utility & Custom Actions" icon="wrench">
+  A collection of powerful actions for handling files, sending emails, validating data, and adding custom logic to your workflows.
+
+<Card title="Send Email" icon="envelope">
+
+**Purpose:** Sends an email using a pre-configured email template. This is a
+secure **Server-side** action.
+
+**Key Parameters:**
+
+- `Template`: Select one of your pre-designed Email Templates.
+- `Display Name`: The name of the sender that the recipient will see.
+- `Send To`: The recipient's email address.
+- `Preview`: The dynamic data to inject into your email template (e.g., a user's name or an order number).
+
+---
+
+#### **Handling the Response**
+
+- `Error`: Select a `Text` state variable to hold any error messages if the email fails to send.
+- `Is loading`: Select a `Boolean` state variable to track the sending process.
+
+</Card>
+
+<Card title="Validate Data" icon="check-double">
+  
+  **Purpose:** Checks if a piece of data matches a pre-defined structure or
+  rules (a Zod Schema). This action can be used on both the **Frontend** and
+  **Server**. 
+  
+  **Key Parameters:**
+
+- `Schema`: Select the Form Schema you want to validate against.
+- `Data`: The data object you want to validate.
+- `Is Valid Data`: Select a `Boolean` state variable that will be set to `true` if the data is valid, or `false` if it is not.
+
+---
+
+#### **Handling the Response**
+
+- `Error`: Select a `Text` state variable to store any specific validation error messages.
+- `Is loading`: Select a `Boolean` state variable to track the validation process.
+
+</Card>
+
+<Card title="Show toast message" icon="comment-dots">
+
+**Purpose:** Displays a small, temporary notification message (a "toast") to
+the user. This is a **Frontend-only** action.
+
+**Key Parameters:**
+
+- `Toast Type`: The style of the notification: `Success`, `Error`, or `Info`.
+- `Toast Position`: Where on the screen the toast should appear.
+- `Message`: The text content to display in the toast.
+- `Properties`: Advanced JSON configuration for things like `duration` (in milliseconds).
+
+<Note>This action uses the [react-hot-toast](https://react-hot-toast.com/) library.</Note>
+</Card>
+
+<Card title="Trigger Function" icon="code">
+  **Purpose:** Executes a custom function that you've defined in the function section under the Data tab. This can be used on both the **Frontend** and **Server**.
+
+**Key Parameters:**
+
+- `Function`: Select the pre-defined function you want to run from the dropdown.
+- `Result`: Select a state variable to store the output or return value of the function.
+
+</Card>
+
+<Card title="Copy to clipboard" icon="clipboard">
+  **Purpose:** Copies a specified piece of text or image to the user's
+  clipboard. This is a **Frontend-only** action.
+</Card>
+
+<Card title="Download file" icon="download">
+
+**Purpose:** Prompts the user's browser to download a file. This is a
+**Frontend-only** action.
+
+**Key Parameters:**
+
+- `File format`: The format of your source data (e.g., `text`, `base64`, `blob`).
+- `File data`: The actual content of the file you want to make downloadable.
+- `File MIME type`: The type of the file, which tells the browser how to handle it (e.g.,
+  `application/pdf`, `image/png`).
+- `File name`: The desired name for the downloaded file.
+
+</Card>
+
+<Card title="Export to CSV" icon="file-csv">
+
+**Purpose:** Converts an array of data into a CSV file and prompts the user to
+download it. This is a **Frontend-only** action.
+
+**Key Parameters:**
+
+- `File name`: The desired name for the downloaded `.csv` file (the extension is added
+  automatically).
+- `CSV data`: The array of objects that you want to convert to CSV format.
+
+</Card>
+
+  <Card title="Print in console (debug)" icon="terminal">
+    **Purpose:** Logs a value to the browser's developer console. Essential for debugging and a **Frontend-only** action.
+  </Card>
+  
+  <Card title="Change theme" icon="palette">
+    **Purpose:** Switches the application's visual theme (e.g., from light to dark mode). This is a **Frontend-only** action.
+  </Card>
+  
+  <Card title="Wait" icon="hourglass-half">
+    **Purpose:** Pauses the workflow for a specified amount of time before executing the next action. This can be used on both the **Frontend** and **Server**.
+    
+    **Key Parameter:**
+    - `Wait (seconds)`: The number of seconds the workflow should pause before continuing.
+  </Card>
+</Accordion>
+
+<Accordion title="API & SDKs" icon="cloud">
+  Actions for connecting to external APIs and leveraging powerful, natively integrated AI models. All actions in this category involve secure **Server-side** communication.
+
+{" "}
+<Card title="Make an API call" icon="paper-plane">
+  **Purpose:** Executes a pre-configured API endpoint from your "Data" tab. This
+  is your primary tool for interacting with any third-party API.
+</Card>
+
+  <Card title="AI SDK" icon="robot">
+    **Purpose:** Provides a suite of actions that connect directly to generative AI models, powered by the Vercel AI SDK. These actions allow you to build powerful AI-driven features directly into your workflows.
+    
+    ---
+    
+    #### **Available AI SDK Actions:**
+    
+    -   **Generate Object:** Sends a prompt and receives a structured JSON object from an AI model.
+    -   **Generate Text:** Sends a prompt and receives a block of text in response.
+    -   **Stream Object:** Sends a prompt and receives a structured JSON object back as a real-time stream.
+    -   **Stream Text:** Sends a prompt and receives a text response as a real-time stream, perfect for chatbot-style "typing" effects.
+    -   **Generate Image:** Sends a prompt to an image generation model and receives an image.
+    -   **Generate Speech:** Converts a piece of text into spoken audio.
+    -   **Transcribe:** Converts an audio file into a text transcript.
+    -   **Embedding:** Converts text into a vector embedding for use in AI-powered search or similarity tasks.
+  </Card>
+</Accordion>
+</AccordionGroup>

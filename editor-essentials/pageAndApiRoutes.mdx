@@ -1,0 +1,129 @@
+---
+title: "Pages & API Routes"
+description: "Learn how to create the fundamental structure of your Saasio application by adding pages for your user interface and API routes for your backend logic."
+sidebarTitle: "Pages & API Routes"
+icon: "sitemap"
+---
+
+---
+
+# Pages & API Routes: The Application Blueprint
+
+Every application you build in Saasio is composed of two fundamental building blocks. Understanding the distinct role of each is the key to creating a powerful, full-stack application.
+
+<CardGroup cols={2}>
+  <Card title="Pages: The User Interface" icon="file-lines">
+    Pages are what your users see and interact with—like a homepage, a
+    dashboard, or a profile section. They are the visual **front-end** of your
+    application.
+  </Card>
+  <Card title="API Routes: The Backend Logic" icon="server">
+    API Routes are the invisible **backend**. They are server-side endpoints
+    that handle data, process requests, and communicate with your database or
+    other services.
+  </Card>
+</CardGroup>
+
+---
+
+## Pages: Building Your User Interface
+
+Your project's pages form the map of your application. When you create a new project, Saasio automatically includes two essential, non-deletable pages:
+
+- **Home (`/`):** The default page users land on when they visit your main URL.
+- **404 (`/404`):** The "Not Found" page shown when a user tries to access a URL that doesn't exist.
+
+Here’s the step-by-step process for adding new pages to your application.
+
+<Steps>
+<Step title="1. Navigate to the Pages Tab">
+In the left panel of the Visual Editor, ensure the **Pages** tab is selected. This area lists all the pages in your project.
+</Step>
+
+<Step title="2. Create a New Page">
+  Click the **`+`** icon at the top of the pages list. This action opens a
+  prompt to name your new page.
+</Step>
+
+<Step title="3. Enter the Page Name">
+Provide a clear, simple name for your page. This name will automatically become its URL path. For example:
+- A page named `pricing` will be accessible at `your-domain.com/pricing`.
+- A page named `about-us` will be accessible at `your-domain.com/about-us`.
+
+<Frame caption="Creating a new page in the Saasio editor by providing a name.">
+  <img
+    alt="Creating a new page in the Saasio editor by providing a name."
+    src="/images/create-page.png"
+    style={{ borderRadius: "8px" }}
+  />
+</Frame>
+
+<Note>
+  Once created, you can click on any page in the list to load it onto the
+  central canvas and begin designing its layout and content.
+</Note>
+
+</Step>
+</Steps>
+
+---
+
+## API Routes: Powering Your Backend
+
+API Routes are your application's connection to the server. They are essential for any task that requires secure or private logic, such as fetching user data, processing a payment, or connecting to another company's API.
+
+Here's how to create one.
+
+<Steps>
+<Step title="1. Navigate to the API Routes Tab">
+In the left panel, switch from "Pages" to the **API Routes** tab.
+</Step>
+
+<Step title="2. Create a New API Route">
+  Click the **`+`** icon to open the API route configuration dialog.
+</Step>
+
+<Step title="3. Define the Route Path and Method">
+Every API route needs two critical pieces of information:
+
+- **Path Name:** The unique URL for your endpoint (e.g., `/users`, `/products`). This is the address that your application (or other services) will call.
+- **Method:** The HTTP method the route will respond to. This defines the type of action the route performs:
+  - `GET`: **Retrieve Data.** Use this method to read or fetch information from your database or an external service.
+  - `POST`: **Create New Data.** Use this method to add a new record to your database or send data to an external service.
+  - `PUT`: **Update Existing Data.** Use this method to modify a record that already exists.
+  - `DELETE`: **Remove Data.** Use this method to permanently remove a record from your database.
+
+<Frame caption="Configuring a new API Route with a path and HTTP method.">
+  <img
+    alt="Configuring a new API Route with a path and HTTP method."
+    src="/images/create-route.png"
+    style={{ borderRadius: "8px" }}
+/>
+
+</Frame>
+</Step>
+</Steps>
+
+### Building API Route Logic
+
+After creating an API Route, you must define what it does. Select the new route, then click the **Logic** tab in the top navigation bar. This opens the workflow editor for that route.
+
+<Warning>
+**Critical Rule: Always End Your Workflow with "Route Send Response"**
+
+An API route's only job is to receive a request and send a response. The **`Route send response`** action is how you send that response.
+
+- Every possible path in your API route's workflow **must** end with this action.
+- If you use a **Conditioner** action, both the "true" branch and the "false" branch **must** have their own `Route send response` action at the end.
+
+Failure to do this will cause the request to time out and result in an error, as the client will never receive a response.
+
+</Warning>
+
+---
+
+### What's Next?
+
+Now that you know how to build the foundational structure of your app, it's time to add content and design your pages.
+
+- **[Adding & Managing Elements →](/editor-essentials/adding-elements)**
