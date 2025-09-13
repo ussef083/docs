@@ -1,0 +1,108 @@
+---
+title: "Creating Reusable Components"
+description: "Learn how to build your own reusable UI components with props and local state, allowing you to create a scalable and maintainable design system for your application."
+sidebarTitle: "Reusable Components"
+icon: "box-archive"
+---
+
+---
+
+As you build your application, you'll often find yourself recreating the same set of UI elements. Imagine building a standardized user profile card with an image, a name, and a button. Instead of rebuilding this card on every page, you can create a single **Reusable Component**.
+
+<Info>
+  
+**What is a Reusable Component?**
+
+Think of it as your own custom-built LEGO
+brick. You design and build it once, and then you can use that exact same
+brick anywhere in your application. If you update the master brick, every copy
+of it updates automatically.
+
+</Info>
+
+---
+
+## The Anatomy of a Reusable Component
+
+Just like Functions, Reusable Components have their own internal logic and data, which makes them incredibly powerful.
+
+<CardGroup cols={2}>
+  <Card title="Props (Inputs)" icon="arrow-down">
+
+---
+
+**Think of these as the "customizable parts" of your LEGO brick.**
+
+Props allow you to pass data _into_ your component from the outside. For a user
+profile card, you would have props for the `userImage`, `userName`, and
+`profileLink`, so each card can display different information while looking
+the same.
+
+  </Card>
+  <Card title="Local States (Internal Memory)" icon="brain">
+
+---
+
+**Think of these as the component's own private memory.**
+
+Local States are
+variables that exist only within the component. For example, a "Show More"
+button inside your component could use a local `isExpanded` state to track
+whether it's open or closed, without affecting anything outside the
+component.
+
+  </Card>
+</CardGroup>
+
+---
+
+## How to Create a Reusable Component
+
+Let's walk through creating a simple "User Profile Card" component.
+
+<Steps>
+<Step title="1. Navigate to the Components Tab">
+In the **Left Panel** of the Visual Editor, click on the **Components** tab.
+</Step>
+
+<Step title="2. Create a New Component">
+  Click the **`+`** icon to create a new component. Give it a descriptive name,
+  like `UserProfileCard`. This will open a dedicated canvas just for designing
+  this component.
+</Step>
+
+<Step title="3. Define Props and Local States">
+  With your new component open, you can define its inputs and internal memory in
+  the properties panel. - **To add a Prop:** Define its name (e.g., `userName`)
+  and its data type. - **To add a Local State:** Define its name and data type,
+  just like a normal page state.
+</Step>
+
+<Step title="4. Design the Component's UI">
+On the component's canvas, build its visual layout using standard elements. For our `UserProfileCard`, you would add an Image, a Text element, and a Button.
+
+Now, **bind these elements to your props**. For example:
+
+- Bind the **Image** element's `Source` to the `userImage` prop.
+- Bind the **Text** element's `Content Source` to the `userName` prop.
+
+</Step>
+</Steps>
+
+Your component is now a self-contained, customizable UI element.
+
+<Warning>
+  **Current Limitation:** At this time, you cannot place a reusable component
+  inside itself (this is known as recursion).
+</Warning>
+
+---
+
+## How to Use a Reusable Component
+
+Once your component is created, using it is easy.
+
+1.  Navigate to any page in your application.
+2.  In the **Left Panel**, switch to the **Components** tab. You will see your newly created `UserProfileCard` in the list.
+3.  **Drag and drop** your component onto the canvas just like any other UI element.
+4.  With the component selected, the **Properties Panel** on the right will now show all the **Props** you defined. You can provide static or dynamic data for each prop to customize that specific instance of the component.

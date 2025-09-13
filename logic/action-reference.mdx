@@ -7,14 +7,12 @@ icon: "list-ol"
 
 ---
 
-# Full Action Reference
-
 Actions are the individual steps that make up your application's workflows. Each action is designed to run in a specific context: on the user's browser (**Frontend**) or on the Saasio backend (**Server**). Understanding this is key to building powerful logic.
 
 ---
 
 <AccordionGroup>
-<Accordion title="Navigation Actions" icon="map-signs">
+<Accordion title="Navigation Actions" icon="compass">
   These actions control the user's browser and run entirely on the **Frontend**.
 
   <Card title="Go to page..." icon="arrow-right">
@@ -22,7 +20,7 @@ Actions are the individual steps that make up your application's workflows. Each
     
     **Key Parameters:**
     - `Destination Page`: Select the page you want to send the user to from a dropdown list.
-    - `URL Parameters` (Optional): Define key-value pairs to send to the destination page.
+    - `URL Parameters` (Optional): Define key-value pairs to send to the destination page. This is essential for creating dynamic pages, like loading a specific user's profile (`/profile?id=123`)
   </Card>
   <Card title="Go to external website" icon="arrow-up-right-from-square">
     **Purpose:** Redirects the user to an external URL outside of your application.
@@ -199,8 +197,7 @@ Actions are the individual steps that make up your application's workflows. Each
 
 <Card title="Send Email" icon="envelope">
 
-**Purpose:** Sends an email using a pre-configured email template. This is a
-secure **Server-side** action.
+**Purpose:** Sends an email using a pre-configured email template.
 
 **Key Parameters:**
 
@@ -226,7 +223,7 @@ secure **Server-side** action.
   
   **Key Parameters:**
 
-- `Schema`: Select the Form Schema you want to validate against.
+- `Schema`: Select the Zod Schema you want to validate against.
 - `Data`: The data object you want to validate.
 - `Is Valid Data`: Select a `Boolean` state variable that will be set to `true` if the data is valid, or `false` if it is not.
 
@@ -236,6 +233,11 @@ secure **Server-side** action.
 
 - `Error`: Select a `Text` state variable to store any specific validation error messages.
 - `Is loading`: Select a `Boolean` state variable to track the validation process.
+
+<Note>
+  **Powered by Zod:** Data validation in Saasio is powered by [Zod
+  V4](https://zod.dev/), allowing for robust and type-safe schema definitions.
+</Note>
 
 </Card>
 
@@ -314,16 +316,15 @@ download it. This is a **Frontend-only** action.
 </Accordion>
 
 <Accordion title="API & SDKs" icon="cloud">
-  Actions for connecting to external APIs and leveraging powerful, natively integrated AI models. All actions in this category involve secure **Server-side** communication.
+  Actions for connecting to external APIs and leveraging powerful, natively integrated AI models.
 
-{" "}
 <Card title="Make an API call" icon="paper-plane">
   **Purpose:** Executes a pre-configured API endpoint from your "Data" tab. This
   is your primary tool for interacting with any third-party API.
 </Card>
 
   <Card title="AI SDK" icon="robot">
-    **Purpose:** Provides a suite of actions that connect directly to generative AI models, powered by the Vercel AI SDK. These actions allow you to build powerful AI-driven features directly into your workflows.
+    **Purpose:** Provides a suite of actions that connect directly to generative AI models, powered by the [Vercel AI SDK](https://ai-sdk.dev/). These actions allow you to build powerful AI-driven features directly into your workflows.
     
     ---
     
@@ -337,6 +338,17 @@ download it. This is a **Frontend-only** action.
     -   **Generate Speech:** Converts a piece of text into spoken audio.
     -   **Transcribe:** Converts an audio file into a text transcript.
     -   **Embedding:** Converts text into a vector embedding for use in AI-powered search or similarity tasks.
+  </Card>
+</Accordion>
+
+<Accordion title="Events & Analytics Actions" icon="chart-line">
+  Actions for sending tracking events to analytics and marketing platforms. These are **Frontend-only** actions.
+
+  <Card title="Send Google Tag Manager event" icon="google">
+    **Purpose:** Pushes a custom event to the Google Tag Manager data layer, allowing you to trigger tags.
+  </Card>
+  <Card title="Send Google Analytics event" icon="google">
+    **Purpose:** Sends event data directly to Google Analytics (GA4) for tracking user interactions and conversions.
   </Card>
 </Accordion>
 </AccordionGroup>

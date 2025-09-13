@@ -1,0 +1,115 @@
+---
+title: "Creating Data Tables"
+description: "Learn how to define the core data structure of your application using Data Tables. This is the foundation for storing and managing all your app's information."
+sidebarTitle: "Data Tables"
+icon: "database"
+---
+
+---
+
+Every powerful application is built on a solid data structure. In Saasio, the foundation of your data is built in **Data Tables**.
+
+Think of a Data Table as a spreadsheet or a database table. It's where you define the "shape" of the information you need to store. For example, a `Users` table would define that every user must have an `email` (Text), a `password` (Text), and a `lastLogin` (Date).
+
+---
+
+## What is a Data Table?
+
+A Data Table is a blueprint for a specific type of data in your app. It's made up of **fields** (columns) where each field has a specific **data type**.
+
+<Info>
+  **Important:** The "Data Tables" tab is for defining the **structure** of your
+  data. The actual data records (rows) are viewed and managed in the **"App
+  Data"** tab.
+</Info>
+
+---
+
+## The Two Roles of a Data Table
+
+In Saasio, Data Tables can serve two distinct but related purposes.
+
+<CardGroup cols={2}>
+  <Card title="For Storing Data" icon="database">
+    This is the most common use. You create a table like `Products` or `Users`
+    to be your actual database. You will use workflows to **create, read,
+    update, and delete** rows in these tables.
+  </Card>
+  <Card title="For Defining a 'Shape' (Pure Type)" icon="sitemap">
+    This is a more advanced concept. You can create a table that **will not
+    store any data itself**. Instead, its only job is to act as a **reusable
+    blueprint** or a "shape" for your data. You can then reference this shape in
+    your State variables or API responses to ensure your data is always
+    structured correctly.
+  </Card>
+</CardGroup>
+
+When you create a new table, you will see an option to define its role.
+
+---
+
+## Creating Your First Data Table
+
+Let's create a simple `Products` table that will define the structure for products in an e-commerce store.
+
+<Steps>
+<Step title="1. Navigate to the Data Tab">
+In the top navigation bar of the editor, click on the **Data** tab. You will land on the **Data Tables** sub-tab by default.
+</Step>
+
+<Step title="2. Create a New Table">
+  Enter a name for your new table in the input field (e.g., `Products`) and
+  click the **"Create"** button. Your new table will appear in the list.
+</Step>
+
+<Step title="3. Add Fields (Columns) to Your Table">
+With your `Products` table selected, you can now add fields to it. Click the **"+ Add new field"** button.
+
+For each field, you need to define:
+
+- **Field Name:** A descriptive name for the column (e.g., `productName`, `price`, `inStock`).
+- **Data Type:** The type of data this field will hold.
+
+</Step>
+</Steps>
+
+---
+
+## Understanding Field Data Types
+
+Choosing the correct data type is essential for a well-structured app. Here are some of the most common types:
+
+<CardGroup>
+  <Card title="Text" icon="font">
+    For storing plain text, like names, descriptions, or emails.
+  </Card>
+  <Card title="Number" icon="calculator">
+    For storing numerical values, like prices, quantities, or ratings.
+  </Card>
+  <Card title="Boolean" icon="toggle-on">
+    For storing a simple `true` or `false` value, like `inStock` or
+    `isVerified`.
+  </Card>
+  <Card title="Date" icon="calendar">
+    For storing a specific date and time, like `createdAt` or `lastLogin`.
+  </Card>
+  <Card title="Relation to another Data Table" icon="link">
+    This is a powerful feature that allows you to link tables together. For
+    example, a `Products` table could have a `seller` field that is a relation
+    to your `Users` table.
+  </Card>
+  <Card title="List of items" icon="list-ol">
+    Check this box if a field should hold a list (array) of values instead of a
+    single value. For example, a `productImages` field could be a `List` of
+    `Images`.
+  </Card>
+</CardGroup>
+
+**Example `Products` Table Structure:**
+
+- `productName` (Text)
+- `description` (Text)
+- `price` (Number)
+- `inStock` (Boolean)
+- `images` (Image, List)
+- `seller` (Relation to `Users` Table)

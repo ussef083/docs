@@ -1,0 +1,111 @@
+---
+title: "Tutorial: User Roles and Permissions"
+description: "Learn how to implement a role-based permission system. This guide covers adding an 'admin' role to your users and creating a protected admin-only section."
+sidebarTitle: "User Roles & Permissions"
+icon: "user-lock"
+---
+
+---
+
+As your application grows, you'll need a way to control what different types of users can see and do. For example, you might have regular "Users" and "Admins" who have special privileges. This is known as **Role-Based Access Control (RBAC)**.
+
+In this tutorial, we will add a `role` field to our users and create a protected "Admin Panel" that only users with the "admin" role can access.
+
+---
+
+## Prerequisites
+
+You must have a fully functional authentication system, as covered in the **"User Authentication"** tutorial. You need:
+
+- A `Users` Data Table.
+- Login, Sign-up, and Logout workflows.
+- A protected `dashboard` page.
+
+---
+
+## Part 1: Add a "Role" Field to Your Users
+
+First, we need a way to store each user's role in the database.
+
+<Steps>
+<Step title="1. Create an 'AppRoles' Option Set">
+To prevent typos and ensure consistency, let's create an Option Set for our roles.
+- Go to **Data → Option Sets**.
+- Create a new set named `AppRoles`.
+- Add two options: `user` and `admin`.
+
+</Step>
+
+<Step title="2. Add the 'role' Field to the Users Table">
+- Go to **Data → Data Tables** and select your `Users` table.
+- Click **"+ Add new field"**.
+- Create a new field with the following properties:
+  - **Field Name:** `role`
+  - **Data Type:** Select your newly created `AppRoles` Option Set.
+  - **Default Value:** Set the default value to `user`. This ensures that every new user who signs up is automatically assigned the standard "user" role.
+
+</Step>
+</Steps>
+
+---
+
+## Part 2: Manually Assign an Admin Role for Testing
+
+For this tutorial, we need an admin user to test with.
+
+1.  **Go to the App Data tab:** Navigate to **Data → App Data**.
+2.  **Select your `Users` table.**
+3.  **Find your user account** (or any user you want to make an admin).
+4.  **Click into the `role` field** for that user and manually change its value from `user` to `admin`.
+
+---
+
+## Part 3: Create the Admin-Only Section
+
+Now, let's build a page that only admins should be able to see.
+
+1.  **Create an `admin` page:** Go to the **Pages** tab and create a new page named `admin`. You can add some text like "Welcome to the Admin Panel".
+2.  **Protect the page:** We will use the same page protection pattern from the authentication tutorial, but with an extra check.
+    - Select the `admin` page and open its **"On Page Load"** workflow.
+    - Add a **Conditioner** action.
+    - **Condition:** We need to check if the user is _not_ an admin. The expression should be: `Current User's user.role` `is not equal to` `"admin"`.
+    - **Actions if True:** If the user is NOT an admin, redirect them away. Add a **"Go to page..."** action and send them to your main `dashboard` or a "Not Authorized" page.
+    - **Actions if False:** Leave this empty. If the user _is_ an admin, the workflow will do nothing, and the page will load normally.
+
+<Info>
+  This workflow acts as a gatekeeper. It runs the moment the page loads and
+  immediately redirects anyone who doesn't have the "admin" role, ensuring they
+  never see the protected content.
+</Info>
+
+---
+
+## Part 4: Conditionally Show UI Elements
+
+You can also use the user's role to show or hide specific buttons or links within your application. For example, let's add a link to the Admin Panel that only admins can see.
+
+<Steps>
+<Step title="1. Add an 'Admin Panel' Button">
+- Go to your main `dashboard` page.
+- Add a new **Button** or **Link** element with the text "Admin Panel".
+
+</Step>
+
+<Step title="2. Add a Navigation Workflow">
+  - Create an **"On Click"** workflow for this new button. - Add a **"Go to
+  page..."** action that navigates to your `admin` page.
+
+</Step>
+
+<Step title="3. Add a Condition to Hide the Button">
+This is the key step. We only want this button to be visible to admins.
+- Select the "Admin Panel" button.
+- Go to the **Conditions** tab in the **Left Panel**.
+- Add a new condition:
+  - **Condition Logic:** Check if `Current User's user.role` `is not equal to` `"admin"`.
+  - **Style Change:** In the `styles` section, set the `display` property to `none`.
+
+</Step>
+</Steps>
+
+Now, the "Admin Panel" button will be completely hidden for any user who does not have the "admin" role, creating a seamless and secure user experience. You can apply this same conditional logic to any element in your application.

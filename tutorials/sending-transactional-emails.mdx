@@ -1,0 +1,107 @@
+---
+title: "Tutorial: Sending Transactional Emails"
+description: "Learn how to send automated emails to your users. This guide covers creating a dynamic email template and triggering it from a secure, server-side Function."
+sidebarTitle: "Sending Transactional Emails"
+icon: "envelope"
+---
+
+---
+
+Automated emails are essential for communicating with your users. Whether you're welcoming a new user, confirming an order, or resetting a password, these "transactional" emails are a core part of any application.
+
+In this tutorial, we will build a workflow that automatically sends a "Welcome!" email to a user immediately after they sign up.
+
+We will cover:
+
+1.  **Creating a dynamic Email Template** with personalized content.
+2.  **Building a secure, server-side Function** to handle the email sending.
+3.  **Triggering the Function** from our existing Sign-Up workflow.
+
+---
+
+## Part 1: Create a Dynamic Email Template
+
+First, we need to design the email itself. We'll create a template that can be personalized with the new user's name.
+
+<Steps>
+<Step title="1. Navigate to Email Templates">
+In the **Left Panel** of the Visual Editor, navigate to the **Email Templates** tab.
+
+</Step>
+
+<Step title="2. Create a New Template">
+- Click to create a new template and give it a name, like `WelcomeEmail`.
+- You will be taken to an editor where you can design your email's subject and body.
+
+</Step>
+
+<Step title="3. Add Dynamic Content">
+This is the key step. We need to define "placeholders" for the data that will be different for each user.
+- **Subject:** Set the subject to something like `Welcome to Our App, <name>!`
+- **Body:** In the body of the email, you can write your welcome message. Where you want to display the user's name, use the same placeholder syntax: `Hi <name>, we're so glad you've joined.`
+
+The `<name>` is a **variable**. We will provide a value for this variable when we send the email.
+
+</Step>
+</Steps>
+
+---
+
+## Part 2: Build a Secure "Send Welcome Email" Function
+
+Sending emails must be done on the server. A **Server-side Function** is the perfect, reusable tool for this job.
+
+<Steps>
+<Step title="1. Create the Server Function">
+- Go to **Data → Functions**.
+- Create a new **Server-side** Function and name it `SendWelcomeEmail`.
+
+</Step>
+
+<Step title="2. Define the Function's Props (Inputs)">
+Our function needs to know *who* to send the email to and *what name* to use for personalization. Add two **Props**:
+- `userEmail` (Data Type: `Text`)
+- `userName` (Data Type: `Text`)
+
+</Step>
+
+<Step title="3. Build the Function's Workflow">
+- Open the workflow editor for your `SendWelcomeEmail` function.
+- Add the **"Send Email"** action.
+
+</Step>
+
+<Step title="4. Configure the 'Send Email' Action">
+- **Template:** Select your `WelcomeEmail` template from the dropdown.
+- **Send To:** Bind this to the `userEmail` **Prop** of your function.
+- **Display Name:** Enter the "From" name for your app (e.g., "The Saasio Team").
+- **Preview (Dynamic Data):** This is where we provide the values for our placeholders.
+  - The **key** must match the variable name in your template (`name`).
+  - The **value** should be bound to the `userName` **Prop** of your function.
+
+</Step>
+</Steps>
+
+Your secure, reusable function is now ready. It accepts an email and a name, and sends your beautifully designed welcome email.
+
+---
+
+## Part 3: Trigger the Function After Sign-Up
+
+The final step is to call our new function from our existing user registration workflow.
+
+1.  **Navigate to your `signup` page.**
+2.  Select the **Sign-Up Form** and open its **"On Submit"** workflow from the **Logic** tab.
+3.  **Find the successful sign-up path.** Your workflow should have a **"Sign up and Login"** action. This action returns the newly created user object.
+4.  **Add the "Trigger Function" action** immediately after the "Sign up and Login" action.
+    - **Function:** Select your `SendWelcomeEmail` function.
+    - **Props:**
+      - `userEmail`: Bind this to the `email` from the **Result** of the "Sign up and Login" action.
+      - `userName`: Bind this to the `name` from the **Result** of the "Sign up and Login" action.
+
+<Info>
+  By placing this in the same workflow, the welcome email is sent instantly and
+  automatically the moment a new user successfully creates their account.
+</Info>
+
+You have now built a complete transactional email system, a critical feature for user onboarding and engagement in any SaaS application. You can reuse your `SendWelcomeEmail` function anywhere you need it.

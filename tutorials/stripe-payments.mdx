@@ -1,0 +1,163 @@
+---
+title: "Tutorial: Processing Payments with Stripe"
+description: "A complete, end-to-end guide to integrating Stripe for payments. Learn to create a checkout session, handle redirects, and securely process webhook events."
+sidebarTitle: "Stripe Payments"
+icon: "credit-card"
+---
+
+---
+
+Accepting payments is the core of most SaaS businesses. This tutorial will guide you through a complete, production-ready Stripe integration, covering the entire flow from a user clicking "Subscribe" to securely verifying their payment on the backend.
+
+We will build two key pieces of logic:
+
+1.  **An API Route** to securely create a Stripe Checkout session.
+2.  **A Webhook API Route** to listen for and process successful payment events from Stripe.
+
+---
+
+## Prerequisites
+
+1.  **Stripe Account:** You need a Stripe account with your API keys (Secret Key and Publishable Key).
+2.  **Environment Variables:** Securely store your Stripe Secret Key. Go to **Data → Environment Variables** and create a new variable named exactly `STRIPE_SECRET_KEY`.
+3.  **Webhook Secret:** In your Stripe Dashboard, go to the Webhooks section and create a new endpoint. You will get a "Signing secret". Create another Environment Variable named `STRIPE_WEBHOOK_SECRET` and store this value.
+
+---
+
+## Part 1: Create the "Checkout Session" API Route
+
+We can't create a checkout session from the frontend, as it would expose our secret key. We must do it on the server using an API Route.
+
+<Steps>
+<Step title="1. Create the API Route">
+- Go to the **API Routes** tab in the left panel.
+- Create a new API Route with the following settings:
+  - **Path Name:** `/create-checkout-session`
+  - **Method:** `POST`
+</Step>
+
+<Step title="2. Build the Workflow">
+  - With the new API Route selected, open the **Logic** tab. - This workflow
+  will use a special, pre-built **"Stripe Create Checkout Session"** action. -
+  Add this action to your workflow.
+</Step>
+
+<Step title="3. Configure the Action">
+  
+The action requires details about the product the user is buying. 
+- **Line Items:** This is where you define the price and quantity. You can get this
+  data from the request that your frontend will send. 
+- **Success URL:** The full URL of the page where you want to send the user after a successful
+  payment (e.g., `https://yourapp.com/success`). 
+- **Cancel URL:** The URL where the user should be sent if they cancel the checkout process.
+
+</Step>
+
+<Step title="4. Return the Session URL">
+- The "Create Checkout Session" action will return a checkout session object from Stripe, which contains a `url`.
+- Add a **"Route send response"** action as the final step.
+- Set its value to the **`url`** from the result of the previous action. This sends the unique checkout URL back to the frontend.
+</Step>
+</Steps>
+
+---
+
+## Part 2: Trigger the Checkout from the UI
+
+Now, let's make a "Subscribe" button on your pricing page that calls this API Route.
+
+1.  **Select your "Subscribe" button** and open its **Logic** tab.
+2.  Add the **"Make an API call"** action.
+3.  Configure it to call the `/create-checkout-session` endpoint you just made.
+4.  **Handle the response:** The result of this API call will be the checkout URL.
+5.  Add a **"Go to external website"** action as the next step.
+6.  Set its `URL` parameter to be the **result of the "Make an API call" action**.
+
+Now, when a user clicks the button, your app will securely create a Stripe session and immediately redirect the user to the Stripe checkout page.
+
+---
+
+## Part 3: Handle Webhook Events from Stripe
+
+When a payment is successful, Stripe needs to tell your application. It does this by sending a special message called a **webhook**. We need to create a dedicated API Route to listen for these webhooks and process them securely.
+
+<Steps>
+<Step title="1. Create the Webhook API Route">
+- Go to the **API Routes** tab in the left panel.
+- Create a new API Route with the following settings:
+  - **Path Name:** `/stripe-webhook`
+  - **Method:** `POST`
+- **Provide API route URL** to Stripe in your Webhook settings in the Stripe Dashboard. You'll need to listen for the `checkout.session.completed` event.
+</Step>
+
+<Step title="2. Create a State Variable for the Event">
+
+- Before building the workflow, you need a place to store the webhook data.
+- With your new API Route selected, go to the **States** tab.
+- Create a new state variable. Let's name it `stripeEvent`. For its **Data Type**, you will
+  find a special, pre-built type called **`Stripe Event`**. Select this.
+
+</Step>
+
+<Step title="3. Add the 'Get Stripe event' Action">
+- Now, open the **Logic** tab for your new webhook route.
+- The **very first action** in your workflow must be the special **"Get Stripe event"** action.
+- **Configure the action:** In the `Set Event` field, select the `stripeEvent` state variable you just created.
+
+<Info>
+**Automatic Security:** This single action handles all the complex security for you. It automatically uses your `STRIPE_WEBHOOK_SECRET` and `STRIPE_SECRET_KEY` Environment Variables to verify that the request is genuinely from Stripe and securely parses the event data.
+</Info>
+</Step>
+
+<Step title="4. Handle Different Event Types with a Conditioner">
+A single webhook endpoint receives many types of events. We need to build logic to handle each case we care about.
+
+- Add a **"Conditioner"** action after the "Get Stripe event" action.
+- **Condition:** Check if the **`type`** property of your `stripeEvent` state variable is equal to the text `"checkout.session.completed"`.
+
+#### **If the Payment is Successful (Actions if True)**
+
+This branch runs when a user successfully pays.
+
+1.  **Fulfill the Order:** Add your business logic here. For example, use the customer ID from the `stripeEvent` data to find the user in your database and add an "Update existing data" action to set their subscription status to "active".
+
+#### **If the Event is Something Else (Actions if False)**
+
+This branch runs for any other event. Here, we'll add another check specifically for failed payments.
+
+1.  **Add a Nested Conditioner:** Inside the `Actions if False` branch, add a second **"Conditioner"** action.
+2.  **Condition:** Configure this inner conditioner to check if the `stripeEvent.type` is equal to `"payment_intent.payment_failed"`.
+
+        -   **If True (Payment Failed):** Add the logic to handle the failure. For example, use the **"Send Email"** action to send a "Payment Failed" email to the customer. You can get the customer's email from the `stripeEvent` data.
+        -   **If False (Other Event):** Leave this branch empty. This will handle any other event types that you don't need to act on.
+
+</Step>
+
+<Step title="5. Send a Success Response (Critically Important)">
+Stripe needs to know you've received the event. You **must** end every possible path in your workflow with a **"Route send response"** action.
+
+- Add a **"Route send response"** action at the end of the **first `true` branch** (after fulfilling the order).
+- Add a **"Route send response"** action at the end of the **nested `true` branch** (after sending the failure email).
+- Add a **"Route send response"** action at the end of the **nested `false` branch**.
+
+A common response is a status code `200` with a simple JSON body like `{"received": true}`. This tells Stripe "Thank you, I've handled it" and prevents them from retrying the webhook.
+
+Your final workflow structure will look like this:
+
+```text
+- Get Stripe event
+- Conditioner (is event 'checkout.session.completed'?)
+  - TRUE:
+    - Fulfill Order (update user DB)
+    - Send 200 Response
+  - FALSE:
+    - Conditioner (is event 'payment_intent.payment_failed'?)
+      - TRUE:
+        - Send Failure Email
+        - Send 200 Response
+      - FALSE:
+        - Send 200 Response (to acknowledge other events)
+```
+
+</Step>
+</Steps>

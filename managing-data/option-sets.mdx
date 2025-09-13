@@ -1,0 +1,58 @@
+---
+title: "Using Option Sets"
+description: "Learn how to create and manage reusable lists of choices with Option Sets to ensure data consistency in dropdowns and Data Tables."
+sidebarTitle: "Option Sets"
+icon: "list-check"
+---
+
+---
+
+An **Option Set** is a predefined, reusable list of text choices. Think of it as a master list that you can refer to anywhere in your application.
+
+For example, instead of manually typing "Free," "Basic," and "Pro" in every dropdown menu for a subscription plan, you can create a single "SubscriptionPlans" Option Set.
+
+---
+
+## Why Use Option Sets?
+
+Using Option Sets is a best practice that saves time and prevents errors.
+
+<CardGroup cols={2}>
+  <Card title="Ensure Consistency" icon="check-double">
+    Prevent typos and variations by using the same master list everywhere. This
+    ensures that a value is always "Pro" and never accidentally "pro" or
+    "professional".
+  </Card>
+  <Card title="Make Easy Updates" icon="pencil">
+    If you need to change or add an option (e.g., adding an "Enterprise" plan),
+    you only have to do it in one place. Every UI element using that set will
+    update automatically.
+  </Card>
+</CardGroup>
+
+---
+
+## How to Create an Option Set
+
+<Steps>
+<Step title="1. Navigate to the Option Sets Tab">
+In the top navigation bar, click the **Data** tab, then select the `Option Sets` sub-tab.
+</Step>
+
+<Step title="2. Create a New Set">
+  Enter a descriptive name for your set (e.g., `SubscriptionPlans`) and click
+  `Create`.
+</Step>
+
+<Step title="3. Add Options to the Set">
+With your new set selected, you can add the individual text choices to the list. For our example, you would add "Free", "Basic", and "Pro".
+</Step>
+</Steps>
+
+---
+
+## How to Use an Option Set
+
+Once created, you can use your Option Set in two primary places:
+
+- **In Data Tables:** When creating a field in a Data Table, you can set its **Data Type** to be one of your Option Sets. This restricts the data for that field to only the choices you've defined, ensuring data integrity.

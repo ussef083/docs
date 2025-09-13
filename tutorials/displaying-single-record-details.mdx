@@ -1,0 +1,128 @@
+---
+title: "Tutorial: Displaying Single Record Details"
+description: "Learn how to build a dynamic detail page. Pass an ID via URL parameters to fetch and display a single, specific record from your database."
+sidebarTitle: "Single Record Page"
+icon: "file"
+---
+
+---
+
+In the last tutorial, we learned how to display a list of all blog posts. Now, we'll build the next logical feature: a "detail page" that shows the full content of a single post when a user clicks on it from the list.
+
+This is a fundamental pattern in web development. We will cover:
+
+1.  **Creating a Dynamic Detail Page** that can display any post.
+2.  **Passing a Record's ID** from the list page to the detail page using URL parameters.
+3.  **Fetching and Displaying** the data for that single, specific record.
+
+---
+
+## Prerequisites
+
+This tutorial assumes you have already completed the **"Displaying a Dynamic List of Data"** tutorial. You should have:
+
+- A `Posts` Data Table with some sample data.
+- A page that displays a list of these posts in a Repeating Group.
+
+---
+
+## Part 1: Create the Detail Page
+
+First, we need a new page that will act as our template for displaying any single post.
+
+1.  **Create a New Page:** Go to the **Pages** tab and create a new page named `post-detail`.
+2.  **Set Up State:** On this new page, select the `Body` and create two state variables:
+    - `currentPost` (Data Type: `Posts` Data Table, **Is List?: `false`**)
+    - `isLoading` (Data Type: `Boolean`, Default Value: `true`)
+3.  **Add UI Elements:** Add two **Text** elements to the canvas: one large one for the title and a smaller one for the content. We will bind these later.
+
+---
+
+## Part 2: Link the List Page to the Detail Page
+
+Now, we need to make each item in our post list clickable. When a user clicks, we need to send them to the `post-detail` page and tell that page _which post_ to load.
+
+We do this by passing the post's unique `id` in the URL.
+
+<Steps>
+<Step title="1. Select the List Item Container">
+- Go back to your main post list page.
+- In your **Repeating Group**, make sure the elements for each item (the title and content text) are wrapped in a **Container**. This container will be our clickable link.
+</Step>
+
+<Step title="2. Add a Navigation Workflow">
+  - Select the **Container** inside your Repeating Group. - Open the **Logic**
+  tab to create an **"On Click"** workflow. - Add the **"Go to page..."**
+  action.
+</Step>
+
+<Step title="3. Configure the Navigation with a URL Parameter">
+- **Destination Page:** Select your `post-detail` page.
+- **URL Parameters:** This is the key step.
+  - Click **"+ Add parameter"**.
+  - For the **Key**, type `postId`.
+  - For the **Value**, we need to get the ID of the specific post in that row. Bind the value to the **`Repeating Group Item`'s `_id` property**.
+</Step>
+</Steps>
+
+Now, when a user clicks on the first post, they will be navigated to a URL like `/post-detail?postId=123xyz`.
+
+---
+
+## Part 3: Fetch a Single Record on the Detail Page
+
+The `post-detail` page now knows which post to load by looking at the `postId` in the URL. Let's build the workflow to fetch its data when the page loads.
+
+<Steps>
+<Step title="1. Open the 'On Page Load' Workflow">
+- Go to your `post-detail` page.
+- Open its **"On Page Load"** workflow from the **Logic** tab.
+</Step>
+
+<Step title="2. Add the 'Set data in state' Action">
+  - Add a **"Set data in state"** action. - **Target State:** Select your
+  `currentPost` state variable.
+</Step>
+
+<Step title="3. Configure the Value to Fetch the Record">
+In the **New Value** field, we will build a two-step expression to first fetch the data and then select the single item from the result.
+
+#### **Step 3a: Fetch the Data from the Database**
+
+- In the expression editor, select the **"Get data from DB"** option.
+- **Table to search:** Select your `Posts` Data Table.
+- **Filters:** This is where we tell Saasio which post to find.
+  - Set up the filter rule: `_id` (the record's unique ID) `is equal to` the value from the **URL parameter** named `postId`.
+
+<Info>
+  Even when you filter by a unique ID, the "Get data from DB" source **always
+  returns a list (array)** of items. In this case, it will be a list containing
+  just one item. Our next step is to extract that single item.
+</Info>
+
+#### **Step 3b: Select the First Item from the List**
+
+- After the "Get data from DB" node in your expression, click the `+` icon and add an **Operation**.
+- Choose the **`at`** operation from the Array (List) transformations.
+- For the **index**, provide a static `Number` with a value of `0`.
+
+Your final expression will first fetch a list containing the single post that matches the ID, and then the `at index 0` operation will pull that single post object out of the list.
+
+</Step>
+
+<Step title="4. Update the Loading State">
+- **After** the data fetch action, add another **"Set data in state"** action.
+- Set your `isLoading` state to `false`.
+</Step>
+</Steps>
+
+---
+
+## Part 4: Display the Single Record's Data
+
+Finally, let's bind our UI elements to the `currentPost` state.
+
+1.  Select the **title Text element**. Bind its **Content Source** to the `currentPost` state variable and select `title` property.
+2.  Select the **content Text element**. Bind its **Content Source** to the `currentPost` state variable and select `content` property.
+
+You have now built a complete list-detail pattern! Users can browse a full list of items, click on any one of them, and be taken to a dynamic page that loads and displays the details for that specific record.

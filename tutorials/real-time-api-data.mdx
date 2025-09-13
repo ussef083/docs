@@ -1,0 +1,135 @@
+---
+title: "Tutorial: Displaying Real-Time API Data"
+description: "A step-by-step guide to fetching, streaming, and displaying data from a public API in real-time, complete with loading states and error handling."
+sidebarTitle: "Real-Time API Data"
+icon: "wifi"
+---
+
+---
+
+In this tutorial, we will build a complete, real-world feature from start to finish. We'll create a "Joke Generator" that calls a public API to fetch a random joke and **streams** the result back to our UI in real-time, like a chatbot.
+
+We will cover:
+
+1.  **Configuring an API Call** to connect to an external service.
+2.  **Setting up State** to manage the joke data, loading status, and potential errors.
+3.  **Building the UI** to display the data and provide user feedback.
+4.  **Creating a Workflow** that ties everything together.
+
+---
+
+## Prerequisites: Setting Up Your Page
+
+Before we begin, you need a page with a few basic elements.
+
+1.  **Create Three State Variables:** Select the `Body` of your page and go to the **States** tab. Create the following:
+
+    - `jokeText` (Data Type: `Text`, Default Value: "Click the button to get a joke!")
+    - `isLoading` (Data Type: `Boolean`, Default Value: `false`)
+    - `errorMessage` (Data Type: `Text`, Default Value: leave empty)
+
+2.  **Add the UI Elements:** On your canvas, add:
+    - A **Button** with the text "Get New Joke".
+    - A **Text Element** to display the joke. **Bind its Content Source to the `jokeText` state variable.**
+    - A **Text Element** for errors (e.g., "Oops! Something went wrong."). **Use a Condition** to make this element visible only when the `errorMessage` state is not empty.
+
+---
+
+## Part 1: Configure the API Call
+
+First, we need to teach Saasio how to talk to the external joke API.
+
+<Steps>
+<Step title="1. Navigate to API Calls">
+In the top navigation bar, go to **Data → API Calls**.
+</Step>
+
+<Step title="2. Create an API Folder">
+  Create a new folder to keep things organized. Let's call it `Joke API`.
+</Step>
+
+<Step title="3. Add a New API Endpoint">
+  Inside the folder, click **"+ Add new call"** and name it `Get Random Joke`.
+  This will open the configuration panel.
+</Step>
+
+<Step title="4. Configure the Endpoint">
+Fill in the details for the public API. For this tutorial, we'll use a simple joke API.
+
+- **Method:** `GET`
+- **URL:** `https://official-joke-api.appspot.com/random_joke`
+- **Response Type:** `JSON`
+
+<Info>
+This is a simple public API, so no **Headers** or **Body** are needed.
+</Info>
+</Step>
+</Steps>
+
+---
+
+## Part 2: Build the Workflow
+
+Now we'll create the logic that runs when the user clicks our button. This workflow will handle the API call, update our UI with the result, and manage any potential errors.
+
+<Steps>
+<Step title="1. Select the Button and Open the Logic Tab">
+Go back to your page and select the "Get New Joke" button. Then, click the **Logic** tab in the top navigation bar.
+</Step>
+
+<Step title="2. Clear Old Data (Optional but Recommended)">
+
+Before we fetch a new joke, it's good practice to clear out any old data.
+
+- Click **"+ Add Action"** and choose **"Set data in state"**.
+- **Target State:** Select your `errorMessage` state.
+- **New Value:** Leave the value empty to clear any previous error messages.
+- Add a second **"Set data in state"** action, select `jokeText`, and set its value to "Fetching new joke..." to provide instant feedback.
+
+</Step>
+
+<Step title="3. Add the 'Make an API call' Action">
+
+This is the core of our workflow.
+
+- Click **"+ Add Action"** again and choose **"Make an API call"**.
+- **API Folder:** Select `Joke API`.
+- **API Endpoint:** Select `Get Random Joke`.
+
+</Step>
+
+<Step title="4. Handle the API Response">
+
+Now, we tell Saasio how to automatically manage our state based on the API call's outcome.
+
+- **Result:** Select your `jokeText` state variable. The successful response from the API will be stored here.
+- **Error:** Select your `errorMessage` state. If the API call fails for any reason, the error message will be stored here.
+- **Is Loading:** Select your `isLoading` state. Saasio will **automatically** set this to `true` when the call starts and back to `false` when it finishes (whether it succeeds or fails).
+
+<Info>
+**Transforming the Result:** The API returns a JSON object like `{"setup": "Why did the...", "punchline": "Because..."}`. We need to combine these into one string.
+
+In the **Result** field's configuration, you'll build a dynamic expression:
+
+1.  Start with the `actionResult` (this represents the data returned from the API).
+2.  Use the `Get value from path` operation to get the `setup`.
+3.  Add a `concat` operation to add a space or a new line.
+4.  Use another `Get value from path` operation on the `actionResult` to get the `punchline`.
+
+Your final expression will create a single, complete joke that gets stored in the `jokeText` state.
+
+</Info>
+</Step>
+</Steps>
+
+---
+
+## The Final Result
+
+You've now built a complete, end-to-end feature!
+
+- When a user clicks the button, the `isLoading` state becomes `true` (you could use this to show a loading spinner).
+- The API call is made.
+- If it's successful, the setup and punchline are combined and **streamed** into the `jokeText` state, causing the text on the screen to update in real-time.
+- If it fails, the `errorMessage` state is populated, causing your error message to appear.
+- When the call is finished, `isLoading` is automatically set back to `false`.

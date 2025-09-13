@@ -1,0 +1,97 @@
+---
+title: "Connecting to External APIs"
+description: "Learn how to use the API Calls tab to configure and manage connections to any external or third-party API, from OpenAI to Stripe."
+sidebarTitle: "API Calls"
+icon: "paper-plane"
+---
+
+---
+
+The true power of a SaaS application comes from its ability to connect to other services. The **API Calls** tab is where you build these connections.
+
+Whether you want to fetch data from a weather service, send a message to Slack, process a payment with Stripe, or even call one of your own Saasio-built API Routes, you must first configure the connection here.
+
+Once an API call is configured, it becomes a reusable action that you can trigger from any workflow in your application.
+
+---
+
+## Structure: Folders and Endpoints
+
+For better organization, the API Calls section uses a two-level structure:
+
+- **API Folders:** These are groups to organize your API calls. For example, you might create a "Stripe" folder to hold all your Stripe-related calls.
+- **API Endpoints:** These are the individual configurations for each specific API call, like "Create a Payment" or "Get Customer Details".
+
+---
+
+## How to Configure a New API Call
+
+Let's walk through the process of setting up a new API call.
+
+<Steps>
+<Step title="1. Navigate to the API Calls Tab">
+In the top navigation bar, click the **Data** tab, then select the `API Calls` sub-tab.
+</Step>
+
+<Step title="2. Create an API Folder">
+  First, create a folder to house your API calls. Give it a logical name, like
+  `OpenAI` or `Stripe`.
+</Step>
+
+<Step title="3. Add a New API Endpoint">
+  Inside your new folder, click the `+ Add new call` button. This will open the
+  main configuration panel for your new API endpoint.
+</Step>
+
+<Step title="4. Configure the Endpoint">
+This is the most important step. You need to provide all the details about the API you are trying to connect to.
+</Step>
+</Steps>
+
+### Key Configuration Fields
+
+Here are the essential properties you need to set up for a new API endpoint.
+
+<ParamField path="Request URL & Method" type="string" required>
+  
+This defines the endpoint your application will call. 
+  
+- **Method:** Choose the HTTP method (`GET`, `POST`, `PUT`, `DELETE`). 
+- **URL:** Paste the full URL of the endpoint. For dynamic parts that will change with each call (like an ID), 
+use square brackets: `.../users/[userId]`.
+
+</ParamField>
+
+<ParamField path="Headers" type="Key-Value Pairs" required>
+  Headers are used for sending metadata with your request. The most common use case is for **authentication**.
+  - **Key:** The name of the header, e.g., `Authorization`.
+  - **Value:** The value for the header.
+
+  <Info>
+    **Security Tip:** For API keys and secret tokens, **always** use an Environment Variable. For example, set the `Authorization` header's value to `Bearer <YOUR_SECRET_KEY>`.
+  </Info>
+</ParamField>
+
+<ParamField path="Body (for POST/PUT requests)" type="JSON, Form Data, or Raw">
+  The `Body` contains the data you are sending *to* the API. This is typically used with `POST`, `PUT`, and `DELETE` requests. Saasio supports several body types:
+  - **JSON:** The most common format. You can define a JSON structure and use angle brackets `<...>` for dynamic values that will be provided by your workflow.
+  - **Form Data:** For sending `multipart/form-data`, often used when uploading files.
+  - **Raw:** For sending plain text, XML, or even a file directly.
+</ParamField>
+
+<ParamField path="Response Type" type="enum">
+  Tell Saasio what kind of data you expect the API to send back. This ensures
+  Saasio can correctly process the response. Common types include `JSON`,
+  `Text`, `Image`, or `File`.
+</ParamField>
+
+## Using Your API Call in a Workflow
+
+Once you've saved your API endpoint, it's ready to be used.
+
+1.  Go to the **Logic** tab for any element.
+2.  Add the `Make an API call` action.
+3.  In the action's configuration, you will be able to select the API Folder and the specific API Endpoint you just created.
+4.  If your API call has dynamic parameters (like `[userId]` in the URL or `<customerName>` in the body), you will be prompted to provide a value for each one.
+
+The workflow will then execute the call, and you can save the response to a state variable to display in your UI.

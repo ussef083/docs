@@ -1,0 +1,147 @@
+---
+title: "Tutorial: Creating, Updating, and Deleting Data (CRUD)"
+description: "Learn how to build a complete data management system. This guide covers the essential C.R.U.D. (Create, Read, Update, Delete) operations for your database."
+sidebarTitle: "Create, Update, Delete Data"
+icon: "pen"
+---
+
+---
+
+You've learned how to read and display data (the "R" in C.R.U.D.). Now it's time to master the other three essential operations: **Create, Update, and Delete**.
+
+In this tutorial, we will build a complete management system for our blog posts, allowing us to add new posts, edit existing ones, and remove them.
+
+---
+
+## Prerequisites
+
+This tutorial builds directly on the previous two. You must have already completed:
+
+1.  **"Displaying a Dynamic List of Data"**: You need a page showing a list of all your posts.
+2.  **"Displaying Single Record Details"**: You need a `post-detail` page that can load a single post based on a URL parameter.
+
+---
+
+## Part 1: CREATE - Building a "New Post" Form
+
+First, let's create a way to add new posts to our database.
+
+#### **Create the Zod Schema**
+
+Before we build the forms, let's create a single "rulebook" for our post data. This ensures that new posts and edited posts follow the same validation rules.
+
+- Go to **Data → Zod Schemas**.
+- Create a new schema named `PostSchema`.
+- Add the following two fields:
+
+| Field Name | Data Type | Key Validation Rules         |
+| :--------- | :-------- | :--------------------------- |
+| `title`    | `Text`    | Required, Minimum length: 5  |
+| `content`  | `Text`    | Required, Minimum length: 20 |
+
+<Steps>
+<Step title="1. Create the 'New Post' Page and Form">
+- Create a new page named `new-post`.
+- Add a **Form** element to the canvas.
+- Inside the form:
+  - Add an **Input** element. In its properties, set its **Name** to `title`.
+  - Add another **Input** (or a Text Area) and set its **Name** to `content`.
+  - Add a **Submit Button** labeled "Create Post".
+- **Crucially, select the main Form element and in its Properties Panel, link its `Schema` to your `PostSchema`**. This automatically enables validation.
+</Step>
+
+<Step title="2. Build the 'On Submit' Workflow">
+  - Select the **Form** element and open its **"On Submit"** workflow from the
+  **Logic** tab. - Add the **"Create new data"** action.
+</Step>
+
+<Step title="3. Configure the Action">
+
+- **Target Table:** Select your `Posts` Data Table.
+- **Fields to Create:** We need to map our form inputs to the database columns.
+  - For the `title` field, bind its value to the `Data submitted from form`'s `title` property.
+  - For the `content` field, bind its value to the `Data submitted from form`'s `content` property.
+
+</Step>
+
+<Step title="4. Navigate After Creation">
+- After the "Create new data" action, add a **"Go to page..."** action.
+- Set the destination to your main blog list page. This way, the user sees their newly created post in the list immediately after creating it.
+</Step>
+</Steps>
+
+---
+
+## Part 2: UPDATE - Building an "Edit Post" Form
+
+Next, let's allow users to edit a post on the `post-detail` page.
+
+<Steps>
+<Step title="1. Add the Editing Form to the Detail Page">
+- Go to your `post-detail` page.
+- Add a **Form** element. **Link its `Schema` to your `PostSchema`**.
+- Inside the form, add two **Input** elements.
+  - Set the first input's **Name** to `title`.
+  - Set the second input's **Name** to `content`.
+- **Pre-fill the form:** Bind the *default value* of each input to the `currentPost` state.
+  - Bind the title input's value to `currentPost.title`.
+  - Bind the content input's value to `currentPost.content`.
+- Add a **Submit Button** inside the form labeled "Save Changes".
+</Step>
+
+<Step title="2. Build the 'Save Changes' Workflow">
+
+- Select the "Save Changes" button and open its **"On Click"** workflow.
+- Add the **"Update existing data"** action.
+
+</Step>
+
+<Step title="3. Configure the Update Action">
+
+- **Target Table:** Select your `Posts` Data Table.
+- **Conditions (WHERE Clause):** Tell Saasio _which_ post to update. Add a condition where `_id` is equal to the `currentPost._id`.
+- **Fields to Update:** Map the database columns to the _current values from the form_.
+  - Set the `title` field to the `Data submitted from form`'s `title` property.
+  - Set the `content` field to the `Data submitted from form`'s `content` property.
+
+</Step>
+
+<Step title="4. Provide User Feedback">
+- After the update action, add a **"Show toast message"** action with a `Success` type and a message like "Post updated successfully!".
+</Step>
+</Steps>
+
+---
+
+## Part 3: DELETE - Adding a "Delete Post" Button
+
+Finally, let's add the ability to remove a post.
+
+<Steps>
+<Step title="1. Add a Delete Button">
+- On your `post-detail` page, add a new **Button** labeled "Delete Post". It's good practice to style it differently (e.g., with a red color) to indicate a destructive action.
+</Step>
+
+<Step title="2. Build the 'Delete' Workflow">
+  - Select the "Delete Post" button and open its **"On Click"** workflow. - Add
+  the **"Delete data"** action.
+</Step>
+
+<Step title="3. Configure the Delete Action">
+  - **Target Table:** Select your `Posts` Data Table. - **Conditions (WHERE
+  Clause):** This is the most important step. You must specify which post to
+  delete. Add a condition where `_id` is equal to the `_id` of the `currentPost`
+  state variable.
+  <Warning>
+    Never leave the conditions empty on a Delete action, as this would delete
+    **all posts** in your table.
+  </Warning>
+</Step>
+
+<Step title="4. Navigate After Deletion">
+- After a post is deleted, the detail page is no longer valid. You must redirect the user.
+- Add a **"Go to page..."** action and send the user back to your main blog list page.
+</Step>
+</Steps>
+
+Congratulations! You have now implemented the full suite of CRUD operations. Your users can create, read, update, and delete data, forming the core of a fully functional web application.

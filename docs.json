@@ -28,7 +28,10 @@
               "editor-essentials/pageAndApiRoutes",
               "editor-essentials/adding-elements",
               "editor-essentials/styling-and-responsive-design",
-              "editor-essentials/state-and-conditions"
+              "editor-essentials/state-and-conditions",
+              "editor-essentials/displaying-dynamic-data",
+              "editor-essentials/transforming-data",
+              "editor-essentials/reusable-components"
             ]
           },
           {
@@ -37,7 +40,35 @@
               "logic/introduction-to-workflows",
               "logic/action-reference"
             ]
+          },
+          {
+            "group": "Managing Data",
+            "pages": [
+              "managing-data/data-tables",
+              "managing-data/zod-schema",
+              "managing-data/environment-variables",
+              "managing-data/api-calls",
+              "managing-data/option-sets",
+              "managing-data/scripts",
+              "managing-data/creating-functions"
+            ]
           }
+        ]
+      },
+      {
+        "tab": "Tutorials",
+        "pages": [
+          "tutorials/real-time-api-data",
+          "tutorials/creating-a-validated-form",
+          "tutorials/user-authentication",
+          "tutorials/stripe-payments",
+          "tutorials/displaying-dynamic-lists",
+          "tutorials/displaying-single-record-details",
+          "tutorials/crud-operations",
+          "tutorials/implementing-pagination",
+          "tutorials/user-roles-and-permissions",
+          "tutorials/creating-tabbed-layouts",
+          "tutorials/sending-transactional-emails"
         ]
       }
     ]

@@ -1,0 +1,105 @@
+---
+title: "Tutorial: Creating a Form with Validation"
+description: "A step-by-step guide to building a contact form that uses a Zod Schema for real-time validation and provides clear feedback to the user."
+sidebarTitle: "Creating a Validated Form"
+icon: "list"
+---
+
+---
+
+Forms are the primary way you'll collect information from your users. In this tutorial, we'll build a complete contact form that includes real-time validation to ensure the data is correct before it's submitted.
+
+We will cover:
+
+1.  **Creating a Zod Schema** to define our data rules.
+2.  **Building the Form UI** with input fields and a submit button.
+3.  **Linking the Form** to our Zod Schema.
+4.  **Creating a Workflow** to handle the submission and show feedback.
+
+---
+
+## Part 1: Define the Rules with a Zod Schema
+
+First, we need to create the "rulebook" for our form data.
+
+<Steps>
+<Step title="1. Navigate to Zod Schemas">
+Go to the **Data** tab in the top navigation bar, then select the **"Zod Schemas"** sub-tab.
+</Step>
+
+<Step title="2. Create the Schema">
+  Create a new schema and name it `ContactFormSchema`.
+</Step>
+
+<Step title="3. Add and Configure Fields">
+Add the following fields and validation rules to your schema. This will define the structure and requirements for our form.
+
+| Field Name | Data Type | Key Validation Rules         | Error Message Example                 |
+| :--------- | :-------- | :--------------------------- | :------------------------------------ |
+| `name`     | `Text`    | Required, Minimum length: 2  | "Name must be at least 2 characters." |
+| `email`    | `Email`   | Required                     | "Please enter a valid email address." |
+| `message`  | `Text`    | Required, Minimum length: 10 | "Message must be 10+ characters."     |
+
+</Step>
+</Steps>
+
+---
+
+## Part 2: Build the Form UI
+
+Now, let's create the visual form on our page.
+
+1.  **Add a Form Element:** From the **Elements** tab, drag a **Form** element onto your canvas. This will act as the container for our inputs.
+2.  **Add Input Fields and Error Text:** For each field in our schema (`name`, `email`, `message`), you will add two elements _inside_ the Form container:
+    - An **Input** element where the user will type.
+    - A **Text** element placed directly below the input. This is where the validation error message will appear. You can style it to be red to make it stand out.
+3.  **Add a Submit Button:** Drag a **Button** _inside_ the Form container. In its properties, set its **`type`** to **`Submit`**. This is a special type that tells the button to trigger the form's own workflow.
+4.  **Add a Text Element for Feedback:** Place a Text element somewhere near the form. We will use this to show a "Thank you!" message.
+
+---
+
+## Part 3: Link the Form to the Schema
+
+This is the magic step where we connect our UI to our rules.
+
+<Steps>
+<Step title="1. Select the Form Element">
+Click on the main **Form** element on your canvas (the container).
+</Step>
+
+<Step title="2. Link the Schema">
+  In the **Properties Panel** on the right, find the property for **`Schema`**.
+  Click the dropdown and select your newly created `ContactFormSchema`.
+</Step>
+
+<Step title="3. Link Each Input and Error Text">
+Now, we need to tell the form how each input and error message corresponds to a rule in our schema.
+
+- **For the "Name" Input:**
+
+  1.  Select the `name` **Input** element. In its properties, set the **`Name`** to `name`.
+  2.  Select the `name` **Text** element below it. In its properties, find the **`Form error message`** and select the `name` field from the schema.
+
+- **For the "Email" Input:**
+
+  1.  Select the `email` **Input** element and set its **`Name`** to `email`.
+  2.  Select the `email` **Text** element and set its **`Form error message`** to the `email` field.
+
+- **For the "Message" Input:** 1. Select the `message` **Input** element and set its **`Name`** to `message`. 2. Select the `message` **Text** element and set its **`Form error message`** to the `message` field.
+
+</Step>
+</Steps>
+
+---
+
+## Part 4: Create the Submission Workflow
+
+Finally, we need to tell the form what to do when the user clicks the "Submit" button or press the "Enter" key and the data is valid.
+
+1.  **Select the Form Element:** Select the main **Form** container again.
+2.  **Open the Logic Tab:** Go to the **Logic** tab in the top navigation bar. Because it's a form, it has a special trigger called **"On Submit"**. This workflow will _only_ run if all the data passes the schema's validation rules.
+3.  **Add Your Actions:** In the "On Submit" workflow, you can now add the actions to process the valid data. For this tutorial, let's do two things:
+    - Add a **"Create new data"** action to save the form's data to a `Submissions` Data Table. You can access the form's data using the `Data Submitted from Form` variable.
+    - Add a **"Show / Hide element"** action to display the "Thank you!" message you created earlier.
+
+Now you have a fully functional and validated form! When a user fills it out, they will get instant feedback if they make a mistake, and the data will only be processed once everything is correct.

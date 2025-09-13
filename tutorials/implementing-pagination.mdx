@@ -1,0 +1,175 @@
+---
+title: "Tutorial: Implementing Pagination on a List"
+description: "Learn how to add pagination to your dynamic lists to improve performance and user experience. This guide covers managing page state, offset/limit data fetching, and disabling buttons."
+sidebarTitle: "Implementing Pagination"
+icon: "arrow-up-1-9"
+---
+
+---
+
+When your application has hundreds of records, fetching and displaying all of them at once is slow. The solution is **Pagination**—breaking the data into smaller, numbered pages.
+
+In this tutorial, we will add "Next" and "Previous" buttons to our blog post list and display the current page information.
+
+---
+
+## Prerequisites
+
+You must have a page that displays a list of posts from your database. For this tutorial to be effective, make sure you have at least 10-15 sample posts in your `Posts` table.
+
+---
+
+## Part 1: Set Up the State for Pagination
+
+We need new state variables to keep track of our pagination status.
+
+1.  **Navigate to your post list page.**
+2.  Select the `Body` and go to the **States** tab.
+3.  **Add or update** the following state variables:
+    - `postList` (Data Type: `Posts` Data Table, Is List?: `true`)
+    - `isLoading` (Data Type: `Boolean`, Default Value: `true`)
+    - `currentPage` (Data Type: `Number`, Default Value: `1`)
+    - `itemsPerPage` (Data Type: `Number`, Default Value: `5`)
+    - `totalPosts` (Data Type: `Number`, Default Value: `0`)
+
+---
+
+## Part 2: Build the 'On Page Load' Workflow
+
+This workflow will run when the page first loads, fetching the initial page of data and the total number of posts.
+
+<Steps>
+<Step title="1. Fetch the First Page of Posts">
+- Open the **"On Page Load"** workflow from the **Logic** tab.
+- Add a **"Set data in state"** action.
+- **Target State:** `postList`.
+- **New Value:** In the expression editor, select **"Get data from DB"**.
+  - **Table:** `Posts`.
+  - **Limit:** Bind this to your `itemsPerPage` state.
+  - **Offset:** Build the expression `(currentPage - 1) * itemsPerPage`. This will correctly be `0` on the first page load.
+</Step>
+
+<Step title="2. Get the Total Number of Posts">
+
+- Add a second **"Set data in state"** action.
+- **Target State:** `totalPosts`.
+- **New Value:** We will fetch the entire list and then get its
+  length.
+  1. In the expression editor, select **"Get data from DB"**.
+  2. **Table:** `Posts`. **Do not set a Limit or Offset.**
+  3. After the "Get data from DB" node, add an **Operation** and choose the **`length`** operation.
+
+</Step>
+
+<Step title="3. Update the Loading State">
+- Add a third **"Set data in state"** action at the very end.
+- **Target State:** `isLoading`.
+- **New Value:** Set it to `false`.
+</Step>
+</Steps>
+
+---
+
+## Part 3: Build the Pagination Buttons (The Basic Way)
+
+Now, let's create the buttons to change pages.
+
+1.  **Add the Buttons:** On your page, add two **Buttons**: "Previous" and "Next".
+2.  **"Next" Button Workflow:**
+    - Create an **"On Click"** workflow.
+    - **Action 1:** `Set data in state` to update `currentPage` to `currentPage + 1`.
+    - **Action 2:** `Set data in state` to update `postList`. **You must copy and paste the entire data fetch expression** from Part 2 here.
+3.  **"Previous" Button Workflow:**
+    - Do the same, but set `currentPage` to `currentPage - 1`, followed by the same copied data fetch expression.
+
+<Warning>
+  This works, but notice the repetition? You've used the exact same data fetch
+  logic in three different places (On Page Load, Next Button, Previous Button).
+  If you need to change how you fetch data, you'll have to update it in all
+  three places. Let's fix this with a Function.
+</Warning>
+
+---
+
+## Part 4: Refactor with a Reusable Function (The Better Way)
+
+Instead of putting our data-fetching logic directly on the page, we will create a self-contained "recipe" for it.
+
+<Steps>
+<Step title="1. Create a New Function">
+- Go to **Data → Functions**.
+- Create a new **Client-side** Function named `fetchPosts`.
+</Step>
+
+<Step title="2. Define the Function's Props (Its Inputs)">
+Our function needs to know which page to fetch and how many items to get per page. Add two **Props**:
+- `pageToFetch` (Data Type: `Number`)
+- `limit` (Data Type: `Number`)
+
+</Step>
+
+<Step title="3. Build the Function's Workflow">
+The function's job is to fetch the data and then **return it**.
+
+1.  In the workflow editor for your `fetchPosts` function, add the **"Return function result"** action. This must be the only action.
+2.  In the `value` field of this action, build your data-fetching expression:
+    - Select **"Get data from DB"**.
+    - **Table:** `Posts`.
+    - **Limit:** Bind this to the `limit` **Prop**.
+    - **Offset:** Build the expression `(pageToFetch - 1) * limit`. **Crucially, use the `pageToFetch` and `limit` Props from the function itself.**
+
+<Info>
+This function is now a perfect "black box". It accepts two inputs (`pageToFetch` and `limit`) and returns a list of posts. It has no knowledge of the page it's being called from.
+</Info>
+</Step>
+</Steps>
+
+Now, we can use our powerful new function to simplify our page logic.
+
+<Steps>
+<Step title="1. Update the 'On Page Load' Workflow">
+- Open the **"On Page Load"** workflow for your post list page.
+- **Action 1: Trigger the Function to Fetch Posts**
+    -   Add the **"Trigger Function"** action.
+    -   **Function:** `fetchPosts`.
+    -   **Props:**
+        -   `pageToFetch`: Pass the `currentPage` state (which is `1`).
+        -   `limit`: Pass the `itemsPerPage` state.
+    -   **Result:** In the `Result` tab of the action, save the returned list of posts into your `postList` state variable.
+- **Action 2: Get the Total Count**
+    -   Add a `Set data in state` action to set the `totalPosts` state by fetching all posts and applying a `length` operation.
+- **Action 3: Update Loading State**
+    -   Add a `Set data in state` action to set `isLoading` to `false`.
+</Step>
+
+<Step title="2. Build the 'Next' Button Workflow">
+- Select the "Next" button and create an **"On Click"** workflow.
+- **Action 1: Increment the Page Number**
+    -   Add a `Set data in state` action to update `currentPage` to `currentPage + 1`.
+- **Action 2: Trigger the Function Again**
+    -   Add a **"Trigger Function"** action.
+    -   **Function:** `fetchPosts`.
+    -   **Props:** Pass the `currentPage` and `itemsPerPage` states. **This will use the newly updated page number.**
+    -   **Result:** Save the returned value into the `postList` state. This will update the UI.
+
+</Step>
+
+<Step title="3. Build the 'Previous' Button Workflow">
+- Create the workflow for the "Previous" button. It will be the same as the "Next" button, but you will decrement the `currentPage` state in the first action.
+</Step>
+</Steps>
+
+---
+
+## Part 4: Add Conditional Logic for a Professional UI
+
+Finally, let's disable the buttons when they can't be used and show the user where they are.
+
+- **Disable the "Previous" Button:**
+  - Select the "Previous" button. In its **Properties Panel**, bind the `Disabled` property to the expression: `currentPage <= 1`.
+- **Disable the "Next" Button:**
+  - Select the "Next" button. Bind its `Disabled` property to the expression: `currentPage * itemsPerPage >= totalPosts`.
+- **Display Page Info:**
+  - Add a **Text** element and bind its content to a dynamic expression to show something like: `Page [currentPage] of [ceil(totalPosts / itemsPerPage)]`.
+
+You have now successfully implemented a complete, high-performance pagination system using the correct workflows!

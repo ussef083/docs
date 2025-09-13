@@ -1,0 +1,114 @@
+---
+title: "Tutorial: Displaying a Dynamic List of Data"
+description: "Learn how to fetch a list of records from your database and display it on your page using a Repeating Group, including loading and empty states."
+sidebarTitle: "Displaying a Dynamic List"
+icon: "list-tree"
+---
+
+---
+
+One of the most common features in any application is a list of items fetched from a database—a list of products, a feed of social media posts, or a directory of users.
+
+In this tutorial, we'll build a complete, dynamic list of blog posts directly from our database. We will cover:
+
+1.  **Creating a Data Table** for our posts.
+2.  **Setting up State** to store the list and loading status.
+3.  **Building the "On Page Load" Workflow** to fetch the data.
+4.  **Using a Repeating Group** to display the data in the UI.
+5.  **Handling Loading and Empty States** for a great user experience.
+
+---
+
+## Part 1: Set Up Your Data
+
+First, we need some data to display.
+
+<Steps>
+<Step title="1. Create a 'Posts' Data Table">
+- Go to **Data → Data Tables**.
+- Create a new table named `Posts`.
+- Give it two fields: `title` (Text) and `content` (Text).
+</Step>
+
+<Step title="2. Add Some Sample Data">
+- Go to the **Data → App Data** tab.
+- Select your `Posts` table.
+- Manually add 2-3 sample blog posts by clicking "+ Add new row" and filling in the titles and content. This will give us something to see when we fetch the data.
+</Step>
+</Steps>
+
+---
+
+## Part 2: Set Up the Page and States
+
+Now, let's prepare the page where the list will be displayed.
+
+1.  **Create State Variables:** On your page, select the `Body` and go to the **States** tab. Create:
+    - `postList` (Data Type: `Posts` Data Table, **Is List?: `true`**)
+    - `isLoading` (Data Type: `Boolean`, Default Value: `true` — We want to show loading immediately).
+2.  **Add UI Elements:**
+    - Drag a **Repeating Group** element onto your canvas. This is the special element for displaying lists.
+    - _Inside_ the Repeating Group, place two **Text** elements: one for the post title and one for the content. The Repeating Group will automatically create a copy of these for each item in our list.
+
+---
+
+## Part 3: Fetch Data on Page Load
+
+This is where we connect everything. We will build a workflow that runs the moment the page loads to fetch our data directly from the database.
+
+<Steps>
+<Step title="1. Open the 'On Page Load' Workflow">
+- Select your page in the **Pages** tab or **Canvas**.
+- Go to the **Logic** tab to open the **"On Page Load"** workflow.
+</Step>
+
+<Step title="2. Add the 'Set data in state' Action">
+
+- Choose the **"Set data in state"** action.
+- **Target State:** Select your`postList` state variable.
+
+</Step>
+
+<Step title="3. Configure the Value to Fetch from Database">
+This is the key step. We will configure the action to get its value directly from the database.
+- In the **New Value** field, click to open the expression editor.
+- From the data source list, select **"Get data from DB"**.
+- A new configuration panel will appear:
+  - **Table to search:** Select your `Posts` Data Table.
+  - **Filters (Optional):** You can add conditions here to filter the results (e.g., find posts where `isPublished` is `true`). For this tutorial, we will leave this empty to fetch *all* posts.
+  - **Sort by (Optional):** You can choose a field to sort the results by, like `createdAt`.
+
+<Info>
+This "Get data from DB" option is a secure, server-side data fetch that runs and returns the data directly to your state variable.
+</Info>
+</Step>
+
+<Step title="4. Update the Loading State">
+- **After** the "Set data in state" action, add a second **"Set data in state"** action.
+- **Target State:** Select your `isLoading` state.
+- **New Value:** Set it to `false`. This ensures the loading state is turned off only after the data has been successfully fetched.
+</Step>
+</Steps>
+
+---
+
+## Part 4: Display the Data in the UI
+
+Now we just need to bind our UI elements to the data.
+
+1.  **Bind the Repeating Group:** Select the main **Repeating Group** element. In its Properties Panel, bind its data source to your `postList` **state variable**.
+2.  **Bind the Internal Elements:**
+    - Select the **title Text element** _inside_ the Repeating Group.
+    - Set its **Content Source** to **"Repeating Group Item"** and its **Value** to the `title` property.
+    - Do the same for the **content Text element**, setting its **Value** to the `content` property.
+
+---
+
+## Part 5: Polishing with Loading and Empty States
+
+For a professional feel, you should give the user feedback.
+
+- **Loading State:** Add a Text element that says "Loading posts...". Use a **Condition** to make it visible only when the `isLoading` state is `true`.
+- **Empty State:** Add another Text element that says "No posts found.". Use a **Condition** to make it visible only when `isLoading` is `false` **AND** the `length` of the `postList` state is `0`.
+
+You have now built a complete, production-ready feature for displaying a dynamic list of data directly from your database!

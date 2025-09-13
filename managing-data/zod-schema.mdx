@@ -1,0 +1,83 @@
+---
+title: "Creating Zod Schemas"
+description: "Learn how to use [Zod](https://zod.dev/) Schemas to define the structure and validation rules for your application's data, ensuring consistency across forms, workflows, and AI tools."
+sidebarTitle: "Zod Schema"
+icon: "clipboard-check"
+---
+
+---
+
+Think of a [Zod](https://zod.dev/) Schema as a **rulebook for your data**. It's where you define exactly what a piece of information should look like. For example, a "Sign Up" schema could have these rules:
+
+- An `email` field must be provided, and it must look like a real email address.
+- A `password` field must be provided, and it must be at least 8 characters long.
+
+By creating these rulebooks, you ensure that the data flowing through your application is always clean, correct, and secure. Saasio uses the powerful **Zod v4** library to make this possible without writing any code.
+
+---
+
+## Why Use Zod Schemas?
+
+Zod Schemas are a versatile tool that you will use in many different parts of your application.
+
+<CardGroup cols={3}>
+  <Card title="Powering Your Forms" icon="list">
+    This is the most common use case. By linking a Form element to a Zod Schema,
+    you automatically get data structure and validation. The form will know
+    which fields are required, what type of data to expect, and will even show
+    error messages for you.
+  </Card>
+  <Card title="Validating Data in Workflows" icon="check-double">
+    Using the `Validate Data` action, you can check if any piece of data (e.g.,
+    from an API call) matches your schema's rules before you try to save it to
+    your database, ensuring data integrity.
+  </Card>
+  <Card title="Structuring AI Outputs" icon="robot">
+    When working with the [AI SDK](https://ai-sdk.dev/), you can provide a Zod
+    Schema to an AI model. This forces the AI to return its response in a
+    perfectly structured JSON format that matches your rules, making AI outputs
+    reliable and easy to work with.
+  </Card>
+</CardGroup>
+
+---
+
+## Creating a Zod Schema
+
+Let's create a simple `SignUpSchema` to define the rules for a user registration form.
+
+<Steps>
+<Step title="1. Navigate to the Zod Schemas Tab">
+In the top navigation bar, click the **Data** tab, then select the **"Zod Schemas"** sub-tab.
+</Step>
+
+<Step title="2. Create a New Schema">
+  Enter a name for your schema (e.g., `SignUpSchema`) and click **"Create"**.
+</Step>
+
+<Step title="3. Add Fields and Validation Rules">
+With your new schema selected, click **"+ Add new field"**. For each field, you must define its rules in the properties panel.
+</Step>
+</Steps>
+
+### Field Validation Rules
+
+For each field in your schema, you can define:
+
+- **Field Name:** The name of the property (e.g., `email`).
+- **Data Type:** The type of data, such as `Text`, `Number`, or `Boolean`.
+- **Validation Rules:** A set of rules to enforce, such as:
+  - **Required:** Is this field mandatory?
+  - **Minimum / Maximum Length:** For text fields.
+  - **Email Format:** Checks if the text is a valid email address.
+  - **Custom Error Message:** You can write your own error message that will be shown to the user if their input is invalid.
+
+**Example: `SignUpSchema` Structure**
+
+Here is how you would configure the fields for our `SignUpSchema`.
+
+| Field Name | Data Type | Key Validation Rules        | Error Message Example                 |
+| :--------- | :-------- | :-------------------------- | :------------------------------------ |
+| `name`     | `Text`    | Required, Minimum length: 2 | "Name must be at least 2 characters." |
+| `email`    | `Email`   | Required                    | "Please enter a valid email address." |
+| `password` | `Text`    | Required, Minimum length: 8 | "Password must be 8+ characters."     |

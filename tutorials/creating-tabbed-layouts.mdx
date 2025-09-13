@@ -1,0 +1,112 @@
+---
+title: "Tutorial: Creating a Tabbed Layout"
+description: "Learn how to build a dynamic tabbed interface. This guide covers using local state to track the active tab and Conditions to show and hide content panels."
+sidebarTitle: "Creating a Tabbed Layout"
+icon: "folder-open"
+---
+
+---
+
+Tabbed layouts are a fantastic way to organize content on a single page, such as a user's "Settings" or "Profile" page. Instead of showing everything at once, you can break it down into logical sections, and the user can switch between them without reloading the page.
+
+In this tutorial, we will build a simple three-tab interface ("Profile", "Billing", and "Security"). This is a perfect exercise for mastering **local state** and **conditions**.
+
+---
+
+## Part 1: Set Up the State
+
+The entire tab system is controlled by a single state variable that keeps track of which tab is currently active.
+
+1.  **Navigate to your page** (e.g., a new `settings` page).
+2.  Select the `Page body` and go to the **States** tab.
+3.  Create a new state variable:
+    - **Name:** `activeTab`
+    - **Data Type:** `Text`
+    - **Default Value:** `profile` (This will be the tab that is visible when the page first loads).
+
+---
+
+## Part 2: Build the UI
+
+Our UI will have two main parts: the tab buttons that the user clicks, and the content panels that are shown or hidden.
+
+<Steps>
+<Step title="1. Create the Tab Buttons">
+- Add three **Button** or **Text** elements to your page. Label them "Profile", "Billing", and "Security". These will be our clickable tabs.
+
+</Step>
+
+<Step title="2. Create the Content Panels">
+- Below the tab buttons, add three **Container** elements.
+- **Inside the first container:** Add some text or inputs related to "Profile".
+- **Inside the second container:** Add content related to "Billing".
+- **Inside the third container:** Add content related to "Security".
+
+Each container is a "panel" that corresponds to one of our tabs.
+
+</Step>
+</Steps>
+
+---
+
+## Part 3: Create the Workflows
+
+Now, we need to create the logic that updates our `activeTab` state when a user clicks a button.
+
+- **For the "Profile" Button:**
+  - Create an **"On Click"** workflow.
+  - Add a **"Set data in state"** action.
+  - **Target State:** `activeTab`.
+  - **New Value:** Set it to the static text `profile`.
+- **For the "Billing" Button:**
+  - Create an **"On Click"** workflow.
+  - Add a **"Set data in state"** action that sets `activeTab` to `billing`.
+- **For the "Security" Button:**
+  - Create an **"On Click"** workflow.
+  - Add a **"Set data in state"** action that sets `activeTab` to `security`.
+
+Now, whenever a user clicks a button, our `activeTab` state will update to reflect their choice.
+
+---
+
+## Part 4: Conditionally Show the Content Panels
+
+This is the final step where we connect the state to the UI's visibility. We will use conditions to show only the panel that matches the active tab.
+
+<Steps>
+<Step title="1. Configure the 'Profile' Panel">
+- Select the **Container** for the "Profile" content.
+- Go to the **Conditions** tab in the **Left Panel**.
+- Add a new condition:
+  - **Condition Logic:** Check if the `activeTab` state variable `is not equal to` `profile`.
+  - **Style Change:** In the `styles` section, set the `display` property to `none`.
+
+</Step>
+
+<Step title="2. Configure the 'Billing' and 'Security' Panels">
+- Repeat the process for the other two panels:
+  - For the **Billing Container**, add a condition to hide it (`display: none`) if `activeTab` is not equal to `billing`.
+  - For the **Security Container**, add a condition to hide it (`display: none`) if `activeTab` is not equal to `security`.
+
+</Step>
+</Steps>
+
+<Info>
+  **How it Works:** By default, all three panels will try to be visible. Our
+  conditions act as "hiding rules". The "Profile" panel will only be hidden if
+  the active tab *isn't* "profile"—meaning it will be visible only when it *is*
+  "profile".
+</Info>
+
+---
+
+## Bonus: Styling the Active Tab
+
+To give the user better visual feedback, you can also use conditions to change the style of the currently active tab button.
+
+- Select the "Profile" button.
+- Go to its **Conditions** tab.
+- Add a condition: IF `activeTab` is equal to `profile`, THEN change its `backgroundColor` or `font-weight`.
+- Repeat for the "Billing" and "Security" buttons.
+
+You have now built a clean, fully functional tabbed interface, a common and essential component of modern web applications.

@@ -1,0 +1,139 @@
+---
+title: "Creating and Using Functions"
+description: "Learn how to create reusable workflows with Functions. Define a sequence of actions once and trigger it from anywhere in your application, on either the client or server."
+sidebarTitle: "Functions"
+icon: "function"
+---
+
+---
+
+As your application grows, you might find yourself building the same sequence of actions over and over again. For example, the logic to "add an item to the shopping cart and update inventory" might be needed in multiple places.
+
+Instead of rebuilding this logic every time, you can create a **Function**.
+
+<Info>
+  
+**What is a Function?**
+
+A Function is a reusable workflow. It's like a recipe:
+you define the steps (actions) once, give it a name, and then you can "cook"
+that recipe (trigger the function) from anywhere in your application.
+
+</Info>
+
+---
+
+## The Anatomy of a Function
+
+Every function you build in Saasio is like a mini-program with three core parts: the inputs it receives, the memory it uses, and the instructions it follows.
+
+<Steps>
+<Step title="1. Props (Inputs)">
+  <div class="flex items-center gap-2">
+      <Icon icon="arrow-down" /> **Think of these as the "ingredients" for your recipe.**
+  </div>
+  
+  Props are how you pass dynamic data *into* your function when you call it. They make your function reusable. For example, a `SendWelcomeEmail` function needs a `userEmail` prop so it knows who to send the email to. Without props, it could only ever send an email to the same hardcoded address.
+</Step>
+
+<Step title="2. Local States (Internal Memory)">
+  <div class="flex items-center gap-2">
+      <Icon icon="brain" /> **Think of these as your "mixing bowls".**
+  </div>
+
+Local States are temporary variables that exist _only_ while the function is running. They are perfect for storing intermediate results or complex calculations inside your function without cluttering your main page's state. Once the function finishes, this internal memory is cleared.
+
+</Step>
+
+<Step title="3. The Workflow (Instructions)">
+  <div class="flex items-center gap-2">
+      <Icon icon="list-ol" /> **This is the "recipe" itself.**
+  </div>
+
+The workflow is the sequence of actions that the function will execute. This logic can read the values passed in via **Props** and can read or write to its own **Local States**. The final result of these instructions can then be returned.
+
+</Step>
+</Steps>
+
+---
+
+## The Two Environments: Client vs. Server
+
+The most important decision you will make when creating a function is where it will run. This choice has significant implications for what the function can do.
+
+<CardGroup cols={2}>
+  <Card title="Client (Frontend)" icon="desktop">
+---
+    **Runs in the user's browser.** Client-side functions are for reusing UI-related tasks.
+
+    - **Use Cases:** Creating a multi-step "Show Notification" sequence, a custom "Form Reset" workflow, any set of actions that manipulate elements on the page or interact with server.
+
+  </Card>
+  <Card title="Server (Backend)" icon="server">
+
+---
+
+    **Runs on the Saasio backend.** Server-side functions are for creating your own reusable backend logic. **They can be securely called from your frontend workflows.**
+
+    - **Use Cases:** A function to `CreateUserProfile` that performs multiple database actions, a function to `ProcessPayment` that calls the Stripe API, or any logic that requires security.
+    - **Cannot do:** Directly interact with the user's page, UI elements or Browser API like `local storage`.
+
+  </Card>
+</CardGroup>
+
+---
+
+## How to Create a Function
+
+<Steps>
+<Step title="1. Navigate to the Functions Tab">
+In the top navigation bar, click the **Data** tab, then select the **"Functions"** sub-tab.
+</Step>
+
+<Step title="2. Define the Name and Environment">
+  
+- **Name:** Give your function a clear, descriptive name (e.g., `AddToCart` or
+  `SendWelcomeEmail`). 
+  
+- **Environment:** Choose either **`Server`** or
+  **`Client`** from the dropdown. This decision cannot be changed later.
+
+</Step>
+
+<Step title="3. Build the Workflow">
+After creating the function, you will be taken to the familiar workflow editor. Here, you can add and configure a sequence of actions that make up your function's logic.
+</Step>
+</Steps>
+
+---
+
+## Returning Data from a Function
+
+Functions can also return a result to the workflow that called them. This is especially powerful for functions that fetch or calculate data.
+
+To do this, the **last action** in your function's workflow must be the **"Return function result"** action.
+
+- **Go to your function's workflow.**
+- Add the **"Return function result"** action.
+- In the `value` field, provide the data you want to send back (e.g., the result of a database query, or a simple success message).
+
+---
+
+## How to Use a Function
+
+Once your function is created, you can run it from any other workflow in your application using a specific action.
+
+1.  Open the workflow editor for any trigger (e.g., a button's "On Click").
+2.  Add the **"Trigger Function"** action.
+3.  In the action's configuration, select the function you want to run.
+4.  **To get the result:** If your function returns a value, you can use the `Result` field in the "Trigger Function" action to save the returned data directly into a state variable.
+
+<Frame caption="Trigger Function Called: 'client'">
+  <img
+    alt="Using the 'Trigger Function' action and saving its result to a state."
+    src="/images/trigger-fn.png"
+    style={{ borderRadius: "8px" }}
+  />
+</Frame>
+
+This powerful pattern allows you to keep your frontend logic clean while executing complex, secure operations on the backend, all within a single workflow.

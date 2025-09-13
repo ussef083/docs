@@ -1,0 +1,155 @@
+---
+title: "Tutorial: Setting Up User Authentication"
+description: "A complete guide to implementing user sign-up, login, and page protection. Learn to use the Account Actions to build a secure authentication flow for your application."
+sidebarTitle: "User Authentication"
+icon: "user-shield"
+---
+
+---
+
+Nearly every SaaS application needs a way for users to sign up, log in, and have their own private account. In Saasio, the authentication system is powered by a special set of **Account Actions** that make this process simple and secure.
+
+This guide will walk you through the entire setup, from creating your pages to protecting your content.
+
+---
+
+## Part 1: Create the Authentication Pages
+
+First, you need the pages that your users will interact with. Go to the **Pages** tab and create two new, blank pages:
+
+- `login`: This will be your main login page.
+- `signup`: This will be your user registration page.
+
+You should also have a `dashboard` page ready. This will be the first page a user sees after they successfully log in.
+
+---
+
+## Part 2: Building the Sign-Up Form & Workflow
+
+On your `signup` page, you'll need a simple form.
+
+#### **UI Setup:**
+
+- A **Form** element.
+- Three **Input** elements inside the form. Name them `name`, `email`, and `password` respectively in their properties. Set the password input's `type` to "Password".
+- A **Button** inside the form with the text "Sign Up". Set its `type` to `Submit`.
+
+#### **Workflow Setup:**
+
+<Steps>
+<Step title="1. Select the Form and Open Logic">
+Select your main **Form** element and open the **Logic** tab. We will use the form's **"On Submit"** trigger.
+</Step>
+
+<Step title="2. Add the 'Sign up and Login' Action">
+  from the **Account Actions** category, choose **"Sign up and Login with
+  credentials"**.
+</Step>
+
+<Step title="3. Configure the Action">
+
+The action needs to know where to get the user's details. You will map each
+parameter to the value from your form's state:
+
+- **Name:** Bind this to the `Data submitted from form`'s `name` property.
+
+- **Email:** Bind this to the `Data submitted from form`'s `email` property.
+- **Password:** Bind this to the `Data submitted from form`'s `password` property.
+
+</Step>
+
+<Step title="4. Add Navigation">
+After the sign-up action is successful, you want to send the user to their new dashboard.
+- Add another action: **"Go to page..."**.
+- Set the destination to your `dashboard` page.
+</Step>
+</Steps>
+
+---
+
+## Part 3: Building the Login Form & Workflow
+
+On your `login` page, the process is very similar.
+
+#### **UI Setup:**
+
+- A **Form** element.
+- Two **Input** elements inside the form, named `email` and `password`.
+- A **Submit Button** with the text "Login".
+
+#### **Workflow Setup:**
+
+1.  Select the **Form** element and open the **Logic** tab for the **"On Submit"** trigger.
+2.  Add the **"Login with credentials"** action from the Account Actions category.
+3.  Bind the `Email` and `Password` parameters to your `Data submitted from form`'s `email` and `password` properties.
+4.  Add a **"Go to page..."** action to redirect the user to the `dashboard` on a successful login.
+
+---
+
+---
+
+## Part 4: Protecting Your Pages
+
+Now that users can log in, you must protect pages like the `dashboard` so that only authenticated users can access them. This is done by creating a special workflow that runs the moment a page begins to load, acting as a security checkpoint.
+
+This workflow will check if the user is logged in. If they are not, it will redirect them away before any of the page's content is shown.
+
+<Steps>
+<Step title="1. Select the Page to Protect">
+In the **Pages** tab in the left panel, find and select the page you want to protect (e.g., `dashboard`).
+</Step>
+
+<Step title="2. Open the 'On Page Load' Workflow">
+  With the page selected, click the **Logic** tab in the top navigation bar.
+  This opens the workflow editor for the page's default trigger, which is **"On
+  Page Load"**. This workflow will be empty by default.
+</Step>
+
+<Step title="3. Add a 'Conditioner' Action">
+  
+The first and only action we need in this workflow is the **"Conditioner"**.
+  This will be our security check. 
+  
+ - From the **Custom Logic** category, choose the **"Conditioner"** action.
+
+</Step>
+
+<Step title="4. Configure the Condition">
+Now, we need to set up the rule for our check.
+
+- **Condition to Check:** We want to check if the current user is **not** authenticated.
+- Click into the value field to open the expression editor.
+  1. Select the **`Current User`** data source.
+  2. The `Current User` object has a `status` property. Select **`status`**.
+  3. Add an "is equal to" (`=`) operation.
+  4. For the second value, choose a static `Text` value of **`unauthenticated`**.
+
+Your final condition should read: **`Current User's status = unauthenticated`**.
+
+</Step>
+
+<Step title="5. Configure the 'Actions if True'">
+This is the most important part. The actions in the **`Actions if True`** branch will only run if the user is *not* logged in.
+
+- Inside the `Actions if True` branch, click **"+ Add Action"**.
+- Add a **"Go to page..."** action.
+- Set the **Destination Page** to your `login` page.
+
+<Info>
+**What about 'Actions if False'?**
+You can leave the `Actions if False` branch completely empty. If the condition is false (meaning the user **is** authenticated), the workflow will simply do nothing and allow the page to load normally for the logged-in user.
+</Info>
+</Step>
+</Steps>
+
+Now, your `dashboard` page is secure. When it loads, the workflow runs instantly. If the user is unauthenticated, they are immediately redirected to the login page without ever seeing the protected content. You can replicate this simple one-action workflow on any page you need to protect.
+
+---
+
+## Part 5: Building the Logout Workflow
+
+Finally, you need a way for users to log out. Place a "Logout" button somewhere in your app (like in the navigation bar). This button does **not** need to be in a form.
+
+1.  Select the "Logout" button and open its **Logic** tab for the **"On Click"** trigger.
+2.  Add the **"Logout"** action from the Account Actions category.
+3.  Add a **"Go to page..."** action to redirect the user to your `login` or homepage after they have been logged out.

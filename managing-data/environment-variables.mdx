@@ -1,0 +1,88 @@
+---
+title: "Using Environment Variables"
+description: "Learn how to securely manage API keys and secret tokens for both the AI SDK (automatic) and custom API Calls (manual)."
+sidebarTitle: "Environment Variables"
+icon: "key"
+---
+
+---
+
+When you connect your Saasio application to external services like OpenAI or Stripe, you'll need to use **API keys** or **secret tokens**. These are like passwords for your application, and they must be kept private.
+
+**Environment Variables** are the correct and secure way to store this sensitive information.
+
+<Warning>
+  **Never** paste your secret API keys directly into an action's configuration.
+  Always use an Environment Variable instead to avoid a major security risk.
+</Warning>
+
+---
+
+## What is an Environment Variable?
+
+An Environment Variable is a key-value pair that is stored securely on the Saasio backend, not in the public-facing editor. You create a variable with a specific name (the key) and store your secret token as its value.
+
+When your application runs a server-side action, Saasio uses these variables to authenticate with external services. This means your secrets are never exposed in your application's code or in the browser.
+
+### Security and Encryption
+
+<Note>
+  To ensure the highest level of security, **all Environment Variable values are
+  encrypted at rest**. This practice prevents any possibility of a leak and
+  ensures that only your application's backend processes can access the
+  sensitive data.
+</Note>
+
+---
+
+## How to Create an Environment Variable
+
+The creation process is the same for all types of secrets.
+
+<Steps>
+<Step title="1. Navigate to the Environment Variables Tab">
+In the top navigation bar, click the **Data** tab, then select the `Environment Variables` sub-tab.
+</Step>
+
+<Step title="2. Add a New Variable">
+Click the `+ Add new variable` button. Two input fields will appear.
+
+- **Name (Key):** Enter the name for your variable. **This is case-sensitive and must be exact.**
+- **Value:** Carefully paste your secret API key or token into this field.
+
+</Step>
+
+<Step title="3. Save the Variable">
+Click the `Save` button. Your variable is now securely stored.
+</Step>
+</Steps>
+
+---
+
+## How to Use Your Variables
+
+How you use a variable depends on the action.
+
+<CardGroup>
+  <Card title="For the AI SDK (Automatic)" icon="robot">
+    **This is the easy way.** For integrated services like the AI SDK, Saasio automatically looks for specific, pre-defined variable names. **You do not need to reference the variable in the action itself.**
+
+    Simply create the variable with the correct name, and Saasio handles the rest automatically.
+
+    **Example:**
+    - To use OpenAI, create a variable named exactly `OPENAI_API_KEY`.
+    - Now, any "AI SDK" action that uses OpenAI will work automatically, without you needing to add the key anywhere else.
+
+  </Card>
+  <Card title="For Custom API Calls (Manual)" icon="paper-plane">
+    **This is for everything else.** When you configure your own API endpoints in the "API Calls" tab, you need to tell Saasio where to use your secret.
+
+    You do this by referencing the variable's name inside angle brackets `<...>` in the URL or Headers section.
+
+    **Example:**
+    - You create a variable named `MY_STRIPE_KEY`.
+    - In your "Make an API call" action, you would set the `Authorization` header to `Bearer <MY_STRIPE_KEY>`.
+    - Saasio will replace `<MY_STRIPE_KEY>` with your secret value when the call is made.
+
+  </Card>
+</CardGroup>

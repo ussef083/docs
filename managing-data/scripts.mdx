@@ -1,0 +1,52 @@
+---
+title: "Injecting Custom Scripts"
+description: "Learn how to use the Scripts tab to inject third-party JavaScript snippets for analytics, live chat widgets, and other services."
+sidebarTitle: "Scripts"
+icon: "code"
+---
+
+---
+
+The **Scripts** tab is an advanced feature that allows you to inject custom JavaScript snippets directly into the `<head>` or `<body>` tags of your application's pages.
+
+This feature is powerful but should be used with care, as poorly written or untrustworthy scripts can negatively affect your application's performance and security.
+
+<Warning>
+  **Primary Use Case:** This feature is intended for integrating trusted,
+  third-party services that require you to paste a script tag into your site.
+  Common examples include: - Analytics tools (like Hotjar or Mixpanel) - Live
+  chat widgets (like Intercom or Crisp) - Advertising or marketing tracking
+  pixels
+</Warning>
+
+---
+
+## How to Add a Script
+
+<Steps>
+<Step title="1. Navigate to the Scripts Tab">
+In the top navigation bar, click the **Data** tab, then select the `Scripts` sub-tab.
+</Step>
+
+<Step title="2. Add a New Script">
+  Click to create a new script. You will be presented with a text editor and a
+  location setting.
+</Step>
+
+<Step title="3. Paste Your Script">
+  Carefully paste the JavaScript code provided by the third-party service into
+  the text editor.
+</Step>
+
+<Step title="4. Choose the Location">
+Select whether the script should be injected into the **`<head>`** or the **`<body>`** of your page. Always follow the instructions provided by the third-party service.
+
+- **`<head>`:** Use for scripts that need to load before your page content is visible (e.g., analytics, font loaders, or style modifiers).
+- **`<body>`:** Use for scripts that can load after your page content is visible (e.g., chat widgets or other non-essential tools).
+
+</Step>
+
+<Step title="5. Save the Script">
+Save your script. It will now be included on every page of your live, published application.
+</Step>
+</Steps>

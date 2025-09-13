@@ -1,0 +1,123 @@
+---
+title: "Transforming Dynamic Data with Operations"
+description: "A detailed guide to using Operations. Learn how to format, calculate, filter, and manipulate any data source before it's displayed in your UI."
+sidebarTitle: "Transforming Data"
+icon: "wand-magic-sparkles"
+---
+
+---
+
+Raw data is rarely ready to be shown to a user. A date needs to be formatted, a name needs to be capitalized, or you might need to calculate a final price. In Saasio, the tools you use to perform these changes are called **Operations**.
+
+Operations are powerful steps you can add to any dynamic data binding to transform the value before it's displayed on the screen.
+
+---
+
+## How to Add an Operation
+
+You can add one or more Operations to any data binding to transform a value before it's displayed.
+
+<Steps>
+<Step title="1. Start with a Data Source">
+Select a UI element and bind it to a dynamic data source, such as a State Variable or the Current User.
+</Step>
+
+<Step title="2. Open the Expression Editor">
+  Click into the data binding field. This will open the expression editor, where
+  you'll see a "node" representing your starting data.
+</Step>
+
+<Step title="3. Add an Operation">
+  Click the **`+`** icon that appears after the data source node, and select
+  **"Operation"** from the menu.
+</Step>
+
+<Step title="4. Choose Your Transformation">
+A list of all available Operations will appear, neatly organized by data type. Select the transformation you wish to apply. You can then configure any required parameters for that operation.
+</Step>
+</Steps>
+
+<Frame>
+  <img
+    alt="Adding an Operation to a data binding expression."
+    src="/images/dynamic-data.png"
+    style={{ borderRadius: "8px" }}
+  />
+</Frame>
+
+---
+
+## Operations by Data Type
+
+Here is a reference guide to the most common and useful Operations, organized by the type of data you are working with.
+
+<AccordionGroup>
+<Accordion title="Text (String) Transformations" icon="font">
+  Operations for manipulating text values.
+
+- **Change Case:** `to upper case` or `to lower case`. Perfect for formatting names and titles.
+- **Capitalize:** `Capitalize`. Converts the first character of the text to uppercase.
+- **Join Text (Concat):** `concat`. Appends text to an existing value. Use this to create dynamic sentences (e.g., join "Welcome, " with a user's name).
+- **Get Length:** `length`. Returns the number of characters in the text.
+- **Trim Whitespace:** `trim`. Removes any empty spaces from the beginning and end of the text.
+
+</Accordion>
+
+<Accordion title="Number Transformations" icon="calculator">
+  Operations for calculations and formatting numbers.
+
+- **Math Operations:** `+` (add), `-` (subtract), `*` (multiply), `/` (divide).
+- **Round Numbers:** `round` (to the nearest integer), `floor` (round down), or `ceil` (round up).
+- **Check if Even/Odd:** `is even` or `is odd`. Returns `true` or `false`.
+- **Convert to String:** `to string`. Changes a number to text, useful for joining it with other text.
+
+</Accordion>
+
+<Accordion title="Date Transformations" icon="calendar">
+  Operations for making dates and times user-friendly.
+
+- **Format a Date:** `format`. Converts a timestamp into a human-readable format (e.g., `DD/MM/YYYY` or `Month Day, Year`).
+- **Add/Subtract Time:** `add days`, `subtract hours`, etc. Allows you to perform date calculations, like finding a future subscription renewal date.
+- **Display Relative Time:** `calculate elapsed / remaining time`. Shows how long ago an event happened (e.g., "2 hours ago").
+- **Extract a Component:** `get year`, `get month`, `get day`. Pulls a specific part out of a date value.
+
+</Accordion>
+
+<Accordion title="Array (List) Transformations" icon="list-ol">
+  Operations for manipulating lists of data, like a list of users or products.
+
+- **Filter a List:** `filter`. Creates a new, smaller list containing only the items that meet a specific condition you define.
+- **Transform a List (Map):** `map`. Creates a new list by transforming each item from an original list (e.g., creating a list of emails from a list of user objects).
+- **Access a Specific Item:** `at`. Gets a single item from a list based on its position (index). The first item is at index `0`.
+- **Get List Length:** `length`. Returns the number of items in the list.
+- **Check for an Item:** `includes`. Returns `true` or `false` if the list contains a specific item.
+
+</Accordion>
+
+<Accordion title="Complex Type (Object) Transformations" icon="sitemap">
+  Operations for working with a single, complex object, like a record from your `Users` table.
+
+<Card title="Access a Property (The Easy Way)" icon="arrow-down">
+    **Use Case:** You have a "Current User" object, and you want to display their email address.
+
+    ---
+
+    **How it works:** The `Current User` data source is a special object. It contains not only the user's data but also their authentication `status` (`authenticated`, `unauthenticated`, etc.). Because of this, you must first access the nested `user` object before you can see its properties.
+
+    The process is a simple two-step selection:
+
+    1.  **Select the `user` Property:** When you first bind to the `Current User`, the dropdown will show its top-level properties. Choose **`user`** from this list. Think of this as opening the folder that contains the user's actual data.
+
+    2.  **Select the Desired Field:** After you select `user`, a new dropdown will appear, showing all the fields from your `Users` table (like `name`, `email`, `profileImage`). From this second list, you can now select **`email`**.
+
+    This two-step process allows you to access any field on the user record.
+
+  </Card>
+  
+  <Card title="Get Value from Path (The Power User Way)" icon="route">
+    **Use Case:** This is your tool for complex data. In some cases, like with data from an external API (e.g., a **Stripe Event**), an object might be so deeply nested that not all of its properties appear in the dropdown.
+    
+    - **How it works:** Use the `Get value from path` operation. Think of it like a treasure map. You provide a "path" using dot notation (e.g., `data.object.customer_email`) that tells Saasio exactly where to find the piece of data you need, no matter how deep it's buried.
+  </Card>
+</Accordion>
+</AccordionGroup>

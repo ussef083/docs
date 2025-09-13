@@ -7,8 +7,6 @@ icon: "brain-circuit"
 
 ---
 
-# Working with State & Conditions
-
 So far, you've learned how to build a beautiful, static interface. Now, it's time to make it intelligent and interactive. This is done using two core features: **State** and **Conditions**.
 
 - **State:** Think of State as the temporary memory for your page. It's where you store data that can change, such as user input, loading indicators, or data fetched from an API.
@@ -121,9 +119,9 @@ You can "bind" an element's property to a state variable, so it always displays 
 For example, to display the value of a state variable in a text element:
 
 1.  Select the **Text** element on your canvas.
-2.  In the **Properties Panel** (right side), find the `textToDisplay` property.
+2.  In the **Properties Panel** (right side), find the `Display` property.
 3.  Change its value from "static text" to **"state"**.
-4.  In the `elementDataSource` field that appears, select your desired state variable.
+4.  In the `Data source` field that appears, select your desired state variable.
 
 The text element will now dynamically display the current value of that state.
 
@@ -176,11 +174,3 @@ You can make two types of changes:
 </Steps>
 
 Now, whenever the `isLoading` state becomes `true`, the button's text will automatically change to "Saving...". When it becomes `false`, it will revert to its original state.
-
----
-
-### What's Next?
-
-You now know how to create a UI that dynamically reacts to data. The final step is to learn how to change that data through user interactions, like clicking a button. This is done with Workflows.
-
-- **[Building Workflows (Logic) →](/logic/introduction-to-workflows)**
