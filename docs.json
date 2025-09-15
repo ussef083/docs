@@ -31,7 +31,8 @@
               "editor-essentials/state-and-conditions",
               "editor-essentials/displaying-dynamic-data",
               "editor-essentials/transforming-data",
-              "editor-essentials/reusable-components"
+              "editor-essentials/reusable-components",
+              "editor-essentials/style-shortcuts"
             ]
           },
           {
@@ -68,7 +69,8 @@
           "tutorials/implementing-pagination",
           "tutorials/user-roles-and-permissions",
           "tutorials/creating-tabbed-layouts",
-          "tutorials/sending-transactional-emails"
+          "tutorials/sending-transactional-emails",
+          "tutorials/building-secure-apps"
         ]
       }
     ]
@@ -86,7 +88,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Start Building",
+      "label": "Start Building Your SaaS Visually",
       "href": "https://saasio.io/projects"
     }
   },

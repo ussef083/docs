@@ -1,0 +1,104 @@
+---
+title: "Best Practices for Building Secure SaaS Apps"
+description: "Learn the essential principles and best practices for building a secure and trustworthy SaaS application on the Saasio platform."
+sidebarTitle: "Building Secure Apps"
+icon: "shield"
+---
+
+---
+
+Building a great SaaS product isn't just about features and design—it's about earning and keeping your users' trust. A secure application is the foundation of that trust.
+
+While Saasio provides a secure infrastructure and powerful tools out of the box, the security of your final application also depends on the choices you make as a builder. This guide outlines the key principles and best practices you should follow.
+
+---
+
+## The Shared Responsibility Model
+
+Think of security as a partnership.
+
+- **Saasio's Responsibility (The Secure Foundation):** We provide a secure, robust infrastructure. We handle things like server security, database protection, encrypting your secrets, and providing secure, pre-built actions.
+- **Your Responsibility (The Secure Blueprint):** You are responsible for using Saasio's tools correctly to build secure application logic. This includes protecting your pages, validating data, and managing user permissions.
+
+By working together, we can create a secure environment for your users.
+
+---
+
+## What Saasio Secures for You Automatically
+
+You get a huge head start on security just by building on Saasio. Here are some of the things we handle for you:
+
+<CardGroup cols={2}>
+  <Card title="Secure Backend" icon="server">
+    All your sensitive logic, like database queries and API calls, runs on the
+    Saasio backend, never in the user's browser where it could be exposed.
+  </Card>
+  <Card title="Encrypted Secrets" icon="key">
+    Any value you save as an **Environment Variable** is encrypted at rest and
+    can never be viewed again in the editor, ensuring your API keys and tokens
+    are safe.
+  </Card>
+  <Card title="Secure Authentication" icon="user-shield">
+    Our built-in **Account Actions** (Login, Sign-up, Logout) use
+    industry-standard security practices to manage user sessions and protect
+    passwords.
+  </Card>
+  <Card title="Webhook Verification" icon="shield-check">
+    Actions like **"Get Stripe event"** automatically handle complex security
+    checks (like signature verification) to ensure that incoming webhooks are
+    legitimate and not malicious.
+  </Card>
+</CardGroup>
+
+---
+
+## Your Checklist: 6 Best Practices for Secure Building
+
+As a builder, your primary job is to ensure your application's logic is secure. Here are the most important practices to follow.
+
+<AccordionGroup>
+<Accordion title="1. Never, Ever Expose Secrets on the Frontend" icon="eye-slash">
+  This is the most important rule of web security. Any logic that runs on the **Client** (in the user's browser) can be viewed. Therefore, you must never place secret API keys or tokens in a frontend workflow.
+
+- **Do This (Secure):** Store your key in an **Environment Variable** and use it in a **Server-side Function** or **API Route**.
+- **Never Do This (Insecure):** Paste a secret key directly into a "Make an API call" action that is part of a frontend workflow.
+
+</Accordion>
+
+<Accordion title="2. Protect Your Pages and Data" icon="lock">
+  Not all users should see all pages. Always add a security checkpoint to pages that contain sensitive information.
+
+- **Best Practice:** On any protected page (like a dashboard), use the **"On Page Load"** workflow to check if the `Current User's status` is `unauthenticated` and redirect them to the login page. (See the Authentication Tutorial).
+
+</Accordion>
+
+<Accordion title="3. Implement Role-Based Access Control (RBAC)" icon="user-lock">
+  Just because a user is logged in doesn't mean they should be able to do everything. Use roles to control access to features.
+
+- **Best Practice:** Add a `role` field to your `Users` table (e.g., "user" vs. "admin"). Before running a sensitive action (like deleting a user), use a **Conditioner** to check if the `Current User's role` is equal to `admin`.
+
+</Accordion>
+
+<Accordion title="4. Use Server-Side Logic for Sensitive Actions" icon="server">
+  Any action that modifies important data, grants permissions, or processes payments **must** be executed on the server.
+
+- **Best Practice:** Instead of putting complex logic in a button's "On Click" workflow, create a **Server-side Function** for the task (e.g., `ProcessPayment`). The button's only job is to trigger that secure function. This prevents users from manipulating the logic from their browser.
+
+</Accordion>
+
+<Accordion title="5. Validate All Data on the Server" icon="clipboard-check">
+  Frontend validation (using a Zod Schema on a Form) is great for user experience, but it can be bypassed. True security comes from server-side validation.
+
+- **Best Practice:** In any API Route or Server Function that receives data, your **first step** should be to use the **"Validate Data"** action to check the incoming data against a Zod Schema before you save it to the database.
+
+</Accordion>
+
+<Accordion title="6. Conditionally Render Sensitive UI Elements" icon="eye">
+  Don't show buttons or links for actions a user isn't allowed to perform.
+
+- **Best Practice:** Use a **Condition** on your UI elements to control their visibility. For example, an "Admin Panel" button should have a condition to hide it (`display: none`) if the `Current User's role` is not `admin`.
+
+</Accordion>
+  </AccordionGroup>
+
+By following these fundamental principles, you can leverage Saasio's secure foundation to build a robust, professional, and trustworthy SaaS product.

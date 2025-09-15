@@ -1,0 +1,111 @@
+---
+title: "Essential Style Shortcuts"
+description: "Boost your design speed with Saasio's intuitive style shortcuts. Learn how to apply common CSS properties like width, height, margin, and Flexbox layouts with a few keystrokes."
+sidebarTitle: "Style Shortcuts"
+icon: "keyboard"
+---
+
+---
+
+To help you design faster and more efficiently, the Saasio editor includes a powerful set of **Style Shortcuts**. These shortcuts allow you to apply common CSS properties directly to a selected element without ever needing to open the style panel.
+
+Mastering these shortcuts will dramatically speed up your workflow, especially when creating complex layouts.
+
+---
+
+## How to Use a Style Shortcut
+
+1.  **Select an element** on the canvas.
+2.  Make sure you are not currently editing a text field.
+3.  Simply **type the shortcut key combination**. The corresponding style will be applied instantly.
+
+---
+
+## Most Useful Style Shortcuts
+
+Here is a reference guide to the most common and useful shortcuts available.
+
+### 1. Width & Height Shortcuts
+
+Quickly set the dimensions of your elements.
+
+| Shortcut | CSS Property Applied   | Description                                           |
+| :------- | :--------------------- | :---------------------------------------------------- |
+| `w+t`    | `width: fit-content;`  | Makes the element's width fit its content.            |
+| `w+f`    | `width: 100%;`         | Makes the element take the full width of its parent.  |
+| `h+t`    | `height: fit-content;` | Makes the element's height fit its content.           |
+| `h+f`    | `height: 100%;`        | Makes the element take the full height of its parent. |
+
+### 2. Margin & Padding Shortcuts
+
+Apply consistent spacing to your elements. The number in the shortcut corresponds to the `rem` value.
+
+| Shortcut | CSS Property Applied          |
+| :------- | :---------------------------- |
+| `m+a`    | `margin: auto;`               |
+| `p+5`    | `padding: 5rem;`              |
+| `m+10`   | `margin: 10rem;`              |
+| _etc..._ | _(works for various numbers)_ |
+
+---
+
+## Flexbox Layout Shortcuts
+
+Flexbox is the key to creating modern, responsive layouts. These shortcuts allow you to build complex flex containers in seconds.
+
+### 1. Main Flexbox Setups
+
+These are powerful "combo" shortcuts that apply a full set of common Flexbox properties at once.
+
+<CardGroup cols={2}>
+  
+<Card title="f+x (Flex Row)" icon="arrow-right">
+---
+
+This shortcut creates a horizontal, wrapping container.
+
+**CSS Applied:**
+
+- `display: flex;`
+- `flex-direction: row;`
+- `justify-content: space-between;`
+- `align-items: center;`
+- `flex-wrap: wrap;`
+- `gap: 1rem;`
+
+</Card>
+  
+<Card title="f+y (Flex Column)" icon="arrow-down">
+
+---
+
+This shortcut creates a vertical container.
+
+**CSS Applied:**
+
+- `display: flex;`
+- `flex-direction: column;`
+- `justify-content: space-between;`
+- `align-items: center;`
+- `flex-wrap: nowrap;`
+- `gap: 1rem;`
+
+</Card>
+</CardGroup>
+
+### 2. Flex Direction & Centering
+
+Use these to quickly adjust the alignment and direction of items within a flex container.
+
+| Shortcut | CSS Property Applied       | Description                          |
+| :------- | :------------------------- | :----------------------------------- |
+| `f+x`    | `display: flex;`           | The foundation for all flex layouts. |
+| `f+r`    | `flex-direction: row;`     | Arranges items horizontally.         |
+| `f+c`    | `flex-direction: column;`  | Arranges items vertically.           |
+| `j+c`    | `justify-content: center;` | Centers items along the main axis.   |
+| `i+c`    | `align-items: center;`     | Centers items along the cross axis.  |
+
+<Info>
+  **Tip:** To perfectly center items both horizontally and vertically, select
+  your container and use three shortcuts in a row: `f+x`, `j+c`, and `i+c`.
+</Info>
